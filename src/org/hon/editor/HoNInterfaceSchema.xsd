@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema	version="1.0"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified">
+	<!--
+	color="#A0A0A0"
+	color="0 0 0 .4"
+	color="white"
+	color="invisible"
+	
+	textalign="center"
+	textvalign="center"
+	align="center"
+	valign="bottom"
+	valign="top"
+	float="bottom"
+	
+	rendermode="additive"
+	
+	width="100%"
+	height="95%"
+	width="1.0h"
+	height="2.3h"
+	height=".5h"
+	
+	x="-2.5h"
+	y="-10"
+	
+	noclick="1"
+	noclick="true"
+	visible
+	shadow
+	grow
+	regrow
+	growinvis
+	-->
+	<xs:group name="interfaces">
+		<xs:choice>
+			<xs:element name="frame">
+				<xs:complexType>
+					<xs:group ref="interfaces" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attributeGroup ref="SharedInterfaceAttributes"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="label">
+				<xs:complexType>
+					<xs:attributeGroup ref="SharedInterfaceAttributes"/>
+					
+					<xs:attribute name="textalign" type="xs:string"/>
+					<xs:attribute name="textvalign" type="xs:string"/>
+					<xs:attribute name="font" type="xs:string"/>
+					<xs:attribute name="shadow" type="xs:string"/>
+					<xs:attribute name="wrap" type="xs:string"/>
+					<xs:attribute name="content" type="xs:string"/>
+					<xs:attribute name="outline" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="panel">
+				<xs:complexType>
+					<xs:group ref="interfaces" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attributeGroup ref="SharedInterfaceAttributes"/>
+					
+					<xs:attribute name="luatable" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="image">
+				<xs:complexType>
+					<xs:attributeGroup ref="SharedInterfaceAttributes"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="trigger">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="lua">
+				<xs:complexType>
+					<xs:attribute name="file" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="template">
+				<xs:complexType>
+					<xs:group ref="interfaces" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="instance">
+				<xs:complexType>
+					<xs:attributeGroup ref="SharedInterfaceAttributes"/>
+					
+					<xs:attribute name="slot" type="xs:string"/>
+					<xs:attribute name="label" type="xs:string"/>
+					<xs:attribute name="font" type="xs:string"/>
+					<xs:attribute name="interactive" type="xs:string"/>
+					<xs:attribute name="show_close" type="xs:string"/>
+					<xs:attribute name="closebtn_click" type="xs:string"/>
+					<xs:attribute name="body" type="xs:string"/>
+					<xs:attribute name="id" type="xs:string"/>
+					<xs:attribute name="showClickables" type="xs:string"/>
+					<xs:attribute name="closeClick" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="button">
+				<xs:complexType>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="widgetstate">
+							<xs:complexType>
+								<xs:group ref="interfaces" minOccurs="0" maxOccurs="unbounded"/>
+								
+								<xs:attribute name="statename" type="xs:string" use="required"/>
+								<xs:attribute name="x" type="xs:string"/>
+								<xs:attribute name="y" type="xs:string"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+					<xs:attributeGroup ref="SharedInterfaceAttributes"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="floater">
+				<xs:complexType>
+					<xs:group ref="interfaces" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="visible" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	
+	<xs:attributeGroup name="SharedInterfaceAttributes">
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute name="x" type="xs:string"/>
+		<xs:attribute name="y" type="xs:string"/>
+		<xs:attribute name="width" type="xs:string"/>
+		<xs:attribute name="height" type="xs:string"/>
+		<xs:attribute name="noclick" type="xs:string"/>
+		<xs:attribute name="color" type="xs:string"/>
+		<xs:attribute name="valign" type="xs:string"/>
+		<xs:attribute name="texture" type="xs:string"/>
+		<xs:attribute name="float" type="xs:string"/>
+		<xs:attribute name="visible" type="xs:string"/>
+		<xs:attribute name="group" type="xs:string"/>
+		<xs:attribute name="grow" type="xs:string"/>
+		<xs:attribute name="regrow" type="xs:string"/>
+		<xs:attribute name="growinvis" type="xs:string"/>
+		<xs:attribute name="align" type="xs:string"/>
+		<xs:attribute name="sticky" type="xs:string"/>
+		<xs:attribute name="stickytoinvis" type="xs:string"/>
+		<xs:attribute name="padding" type="xs:string"/>
+		<xs:attribute name="hmargin" type="xs:string"/>
+		<xs:attribute name="vmargin" type="xs:string"/>
+		<xs:attribute name="uscale" type="xs:string"/>
+		<xs:attribute name="utile" type="xs:string"/>
+		<xs:attribute name="ontrigger" type="xs:string"/>
+		<xs:attribute name="fity" type="xs:string"/>
+		<xs:attribute name="fitypadding" type="xs:string"/>
+		<xs:attribute name="fitx" type="xs:string"/>
+		<xs:attribute name="borderthickness" type="xs:string"/>
+		<xs:attribute name="bordercolor" type="xs:string"/>
+		<xs:attribute name="blockinput" type="xs:string"/>
+		
+		<xs:attribute name="watch" type="xs:string"/>
+		<xs:attribute name="watch1" type="xs:string"/>
+		<xs:attribute name="watch2" type="xs:string"/>
+		<xs:attribute name="watch3" type="xs:string"/>
+		<xs:attribute name="ontrigger1" type="xs:string"/>
+		<xs:attribute name="ontrigger2" type="xs:string"/>
+		<xs:attribute name="ontrigger3" type="xs:string"/>
+		<xs:attribute name="onshow" type="xs:string"/>
+		<xs:attribute name="onload" type="xs:string"/>
+		<xs:attribute name="onevent" type="xs:string"/>
+		<xs:attribute name="onmouseover" type="xs:string"/>
+		<xs:attribute name="onclick" type="xs:string"/>
+		<xs:attribute name="onhide" type="xs:string"/>
+	</xs:attributeGroup>
+	
+	<xs:element name="interface">
+		<xs:complexType>
+			<xs:group ref="interfaces" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="luatable" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
+

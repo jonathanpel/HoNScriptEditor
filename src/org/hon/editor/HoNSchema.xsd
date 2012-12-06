@@ -1,0 +1,5063 @@
+<?xml version="1.0"?>
+<!--
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	
+	<!-- Most type should be able to handle lists for levels?
+			e.g: target="this_entity,source_entity" -->			
+	
+	<xs:simpleType name="ActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="passive"/>
+			<xs:enumeration value="target_self"/>
+			<xs:enumeration value="attack"/>
+			<xs:enumeration value="target_entity"/>
+			<xs:enumeration value="target_position"/>
+			<xs:enumeration value="self_position"/>
+			<xs:enumeration value="toggle"/>
+			<xs:enumeration value="no_target"/>
+			<xs:enumeration value="global"/>
+			<xs:enumeration value="target_dual_position"/>
+			<xs:enumeration value="target_vector"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="QueuePositionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="back"/>
+			<xs:enumeration value="front"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="PositionModifierType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="minonline"/>
+			<xs:enumeration value="pointonline"/>
+			<xs:enumeration value="pointpastline"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="Operator">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none"/>
+			<xs:enumeration value="add">
+				<xs:annotation>
+					<xs:documentation>
+						Addition
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sub">
+				<xs:annotation>
+					<xs:documentation>
+						Substract
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mult">
+				<xs:annotation>
+					<xs:documentation>
+						Multiply
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="div">
+				<xs:annotation>
+					<xs:documentation>
+						Divide
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="min">
+				<xs:annotation>
+					<xs:documentation>
+						Minimum
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="max">
+				<xs:annotation>
+					<xs:documentation>
+						Maximum
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<!--
+	<xs:simpleType name="percent">
+		<xs:restriction base="xs:decimal">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	-->
+	
+	<xs:simpleType name="TargetSelection">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none"/>
+			<xs:enumeration value="all"/>
+			<xs:enumeration value="closest"/>
+			<xs:enumeration value="random"/>
+			<xs:enumeration value="random_angle_distance"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="EntityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="this_entity"/>
+			<xs:enumeration value="source_entity"/>
+			<xs:enumeration value="target_entity"/>
+			<xs:enumeration value="this_proxy_entity"/>
+			<xs:enumeration value="proxy_entity"/>
+			<xs:enumeration value="stack_proxy_entity"/>
+			<xs:enumeration value="source_target_offset"/>
+			<xs:enumeration value="source_attack_offset"/>
+			<xs:enumeration value="source_owner_entity"/>
+			<xs:enumeration value="target_target_offset"/>
+			<xs:enumeration value="target_attack_offset"/>
+			<xs:enumeration value="target_owner_entity"/>
+			<xs:enumeration value="inflictor_entity"/>
+			<xs:enumeration value="inflictor_target_offset"/>
+			<xs:enumeration value="inflictor_owner_entity"/>
+			<xs:enumeration value="stack_entity"/>
+			<xs:enumeration value="this_target_offset"/>
+			<xs:enumeration value="this_attack_offset"/>
+			<xs:enumeration value="this_owner_entity"/>
+			<xs:enumeration value="this_inflictor_entity"/>
+			<xs:enumeration value="this_spawner_entity"/>
+			<xs:enumeration value="this_target_entity"/>
+			<xs:enumeration value="this_owner_target_entity"/>
+			<xs:enumeration value="this_proxy_entity1"/>
+			<xs:enumeration value="this_proxy_entity2"/>
+			<xs:enumeration value="this_proxy_entity3"/>
+			<xs:enumeration value="ent0"/>
+			<xs:enumeration value="ent1"/>
+			<xs:enumeration value="ent2"/>
+			<xs:enumeration value="ent3"/>
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="EntityListType">
+		<xs:list itemType="EntityType"/>
+	</xs:simpleType>
+	
+	<xs:simpleType name="EntityPositionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="source_position"/>
+			<xs:enumeration value="source_owner_position"/>
+			<xs:enumeration value="target_position"/>
+			<xs:enumeration value="target_owner_position"/>
+			<xs:enumeration value="inflictor_position"/>
+			<xs:enumeration value="inflictor_owner_position"/>
+			<xs:enumeration value="proxy_position"/>
+			<xs:enumeration value="stack_position"/>
+			<xs:enumeration value="this_position"/>
+			<xs:enumeration value="this_owner_position"/>
+			<xs:enumeration value="this_inflictor_position"/>
+			<xs:enumeration value="this_spawner_position"/>
+			<xs:enumeration value="this_target_position"/>
+			<xs:enumeration value="this_owner_target_position"/>
+			<xs:enumeration value="this_proxy_position"/>
+			<xs:enumeration value="this_proxy_position1"/>
+			<xs:enumeration value="this_proxy_position2"/>
+			<xs:enumeration value="this_proxy_position3"/>
+			<xs:enumeration value="delta_position"/>
+			<xs:enumeration value="ent0_position"/>
+			<xs:enumeration value="ent1_position"/>
+			<xs:enumeration value="ent2_position"/>
+			<xs:enumeration value="ent3_position"/>
+			<xs:enumeration value="pos0"/>
+			<xs:enumeration value="pos1"/>
+			<xs:enumeration value="pos2"/>
+			<xs:enumeration value="pos3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="EntityAndPositionType">
+		<xs:union memberTypes="EntityType EntityPositionType"/>
+	</xs:simpleType>
+	
+	<xs:group name="actions">
+		<xs:choice>
+			<xs:element name="absorbdamage">
+				<xs:annotation>
+					<xs:documentation>
+						When in a damage event, absorbs the max amount of damage. When the max is exceeded, passes true.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="max" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="accumulatedamage">
+				<xs:annotation>
+					<xs:documentation>
+						All damage done to the entity is added to this entity's accumulator at the given scale
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="scale" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="activatemodifierkey">
+				<xs:annotation>
+					<xs:documentation>
+						Activates the named modifier key on the given entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="addattackpreimpactactions" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Adds the sub actions to the current attack's preimpact
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="addattackpredamageactions" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Adds the sub actions to the current attack's predamage
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="addattackdamageeventactions" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Adds the sub actions to the current attack's damageevent
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="addattackimpactactions" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Adds the sub actions to the current attack's impact
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="addattackimpactinvalidactions" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Adds the sub actions to the current attack's impactinvalid
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="addcharges">
+				<xs:annotation>
+					<xs:documentation>
+						Adds count worth of charges to the entity for the given duration. Default duration is infinite.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="target" type="EntityType"/>
+					<xs:attribute name="count" type="xs:string" default="1"/>
+					<xs:attribute name="a" type="xs:string"/>
+					<xs:attribute name="timed" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Each charge's duration is independent of each other if true. Otherwise, adding a charge resets the duration of all charges.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="duration" type="xs:string" default="-1"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="addcritical">
+				<xs:annotation>
+					<xs:documentation>
+						Used in attack/damage event, gives a given chance to multiply damage by the multiplier
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="chance" type="xs:string" default="1"/>
+					<xs:attribute name="multiplier" type="xs:string" default="1"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="adjustagility">
+				<xs:annotation>
+					<xs:documentation>
+						Usable only in an abilityattribute ability. Permenantly increases the entity's agility by the value.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="value" type="xs:decimal" default="0"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="adjustintelligence">
+				<xs:annotation>
+					<xs:documentation>
+						Usable only in an abilityattribute ability. Permenantly increases the entity's intelligence by the value.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="value" type="xs:decimal" default="0"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="adjuststrength">
+				<xs:annotation>
+					<xs:documentation>
+						Usable only in an abilityattribute ability. Permenantly increases the entity's strength by the value.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="value" type="xs:decimal" default="0"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="aggression">
+				<xs:annotation>
+					<xs:documentation>
+						Gives sight of the source to the target as if they attacked them from fog
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="applystate">
+				<xs:annotation>
+					<xs:documentation>
+						Applies a state with the given name to the target for the duration
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="duration" type="xs:string" default="0"/>
+					<xs:attribute name="charges" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the initial charges of the state
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="chargesmul" type="xs:integer" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Multiplies the state's charges by this value
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="ischannel" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Used in channels to designate if this state should auto-expire when the channel ends
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="istoggle" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Used in toggles to designate if this state should auto-expire when the toggle ends
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="proxy" type="EntityType">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the initial charges of the state
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="pushentity" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Pushes this state onto the stack after it is created
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="stack" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Lets multiple copies of the same state from different source stack on the same target
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="continuous" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Makes this state have no duration, it will last until it is manually expired elsewhere
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="timeout" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								How often the state checks if it should start it's expire or expire itself. Usually set to "frametime"
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="spawner" type="EntityType" default="inflictor_entity"/>
+					<xs:attribute name="inflictor" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="owner" type="EntityType"/>
+					<xs:attribute name="source" type="EntityType"/>
+					<xs:attribute name="statelevel" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the level of the state
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="propagatecondition" type="xs:string"/>
+					<xs:attribute name="ignoreinvulnerable" type="xs:string"/>
+					<xs:attribute name="effecttype" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="areaofeffect">
+				<xs:annotation>
+					<xs:documentation>
+						Does an instant AOE with the given parameters, hitting every unit in the radius that fits the targetscheme and selection. This should be used instead of affectors for instant 0 duration AOEs.
+						Can do more actions here, every unit hit runs through these actions in order of being hit
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="source" type="EntityType"/>
+					<xs:attribute name="targetscheme" type="xs:string" use="required"/>
+					<xs:attribute name="effecttype" type="xs:string"/>
+					<xs:attribute name="impacteffect" type="xs:string"/>
+					<xs:attribute name="ignoreinvulnerable" type="xs:boolean" default="false"/>
+					<xs:attribute name="center" type="EntityAndPositionType" default="target_position"/>
+					<xs:attribute name="targetselection" type="TargetSelection"/>
+					<xs:attribute name="radius" type="xs:string"/>
+					<xs:attribute name="innerradiusoffset" type="xs:string" default="0"/>
+					<xs:attribute name="maxtotalimpacts" type="xs:string" default="0"/>
+					<xs:attribute name="maximpactspertarget" type="xs:string" default="0"/>
+					<xs:attribute name="firsttarget" type="EntityType">
+						<xs:annotation>
+							<xs:documentation>
+								Given entity is the first target every time
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="ignore" type="EntityListType">
+						<xs:annotation>
+							<xs:documentation>
+								Given entity is ignored
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="global" type="xs:string" default="false"/>
+					<xs:attribute name="includetrees" type="xs:string" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="attack">
+				<xs:annotation>
+					<xs:documentation>
+						Does an instant attack from the source to the target if the targetscheme and effecttype of the target are valid (from the source)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="targetscheme" type="xs:string"/>
+					<xs:attribute name="effecttype" type="xs:string"/>
+					<xs:attribute name="facetarget" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Instantly turns the source to face the target when the attack is done
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="attackaction">
+				<xs:annotation>
+					<xs:documentation>
+						Does an instant attack from the source to the target if the targetscheme and effecttype of the target are valid (from the source). Skips the normal attack events before the action.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="targetscheme" type="xs:string" use="required"/>
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="bind">
+				<xs:annotation>
+					<xs:documentation>
+						Binds the target to the entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="position" type="xs:string" default="false"/>
+					<xs:attribute name="positionoverride" type="xs:string"/>
+					<xs:attribute name="vertical" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								When true, the bound target retains it's z position instead of snapping to the projectile's
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="turn" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Turns the target to face in the direction the projectile is traveling
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="unbindondeath" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Unbinds the target when it dies
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="nopush" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								When true, when the to a projectile will not break channeling
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="bonusdamageadd">
+				<xs:annotation>
+					<xs:documentation>
+						Adds the listed damage (a, or a / b with the operator) to the next attack, uses source if the target is blank
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="bonusdamagemult">
+				<xs:annotation>
+					<xs:documentation>
+						Used in &#60;onattack /&#62;, multiplies the attackdamage by the value (a, or a / b with the operator), uses source if the target is blank
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="bounce">
+				<xs:annotation>
+					<xs:documentation>
+						Causes the current attack or projectile to bounce the count number of times, searching the range around the bounce-off-of target, multiplying damage by damagemult and only hitting the targets of the fitting targetscheme.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="count" type="xs:string" use="required"/>
+					<xs:attribute name="range" type="xs:string" use="required"/>
+					<xs:attribute name="damagemult" type="xs:string" default="0"/>
+					<xs:attribute name="targetscheme" type="xs:string" use="required"/>
+					<xs:attribute name="effecttype" type="xs:string"/>
+					<xs:attribute name="seek" type="TargetSelection" default="random">
+						<xs:annotation>
+							<xs:documentation>
+								Controls how the bounce target is choosen. Can also be closest or farthest
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="maxbouncespertarget" type="xs:string" default="1"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="breakchannel">
+				<xs:annotation>
+					<xs:documentation>
+						Breaks any current channeling abilities of the entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="broadcastmessage">
+				<xs:annotation>
+					<xs:documentation>
+						Broadcasts the type of message at the source entity's position, used right now to alert the team when a courier dies based on type
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="type" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Currently can only be either "walkingcourier" or "flyingcourier"
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="calculatedamage">
+				<xs:annotation>
+					<xs:documentation>
+						Returns the damage after reduction calculations from the source to the target of the given amount, effecttype, and supertype.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="amount" type="xs:string" default="0"/>
+					<xs:attribute name="a" type="xs:string" default="0"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+					<xs:attribute name="supertype" type="xs:string" default=""/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="canactivate">
+				<xs:annotation>
+					<xs:documentation>
+						Returns true if the ability can be activated. For example, if the target is stunned, it will return false since you can't use abilities while stunned.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="canattack">
+				<xs:annotation>
+					<xs:documentation>
+						Runs the same check that your auto attack. Basically a &#60;cantarget /&#62; using your attack target scheme automatically.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="cancel">
+				<xs:annotation>
+					<xs:documentation>
+						Used in orders, cancel the entity (order) when called
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="cantarget">
+				<xs:annotation>
+					<xs:documentation>
+						Checks if the source can hit the target given the parameters. Example: If targetscheme is enemy_units and you attack an allied creep, it will return false, but if you attack an enemy creep it's true.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="enemy" type="xs:string"/>
+					<xs:attribute name="targetscheme" type="xs:string"/>
+					<xs:attribute name="effecttype" type="xs:string"/>
+					<xs:attribute name="ignoreinvulnerable" type="xs:boolean" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="casteffecttype">
+				<xs:annotation>
+					<xs:documentation>
+						Used to check if the current ability in the event caused by the entity has the selected effecttype. For example, can be used to check if someone uses an attack ability so power supply won't gain charges.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="chain">
+				<xs:annotation>
+					<xs:documentation>
+						Used in affectors, when the onimpact is hit and this is inside, will basically call the affector again on top of the current target (excluding it from possible targets) as many times as chained. Example, chain lightning
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="count" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="chance">
+				<xs:annotation>
+					<xs:documentation>
+						Passes the call if it randoms past the chance value
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="threshold" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="changeaccumulator">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the accumulator of the entity to a and b using the op. a in this action is always accumulator of the entity before the change.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="b" type="xs:string" use="required"/>
+					<xs:attribute name="op" type="Operator" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="changecurrentcombatdamage">
+				<xs:annotation>
+					<xs:documentation>
+						Used in a combat event to change the current combat damage. Takes the combat damage before change as a and sets it using b and op.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="b" type="xs:string" use="required"/>
+					<xs:attribute name="op" type="Operator" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="changedamage">
+				<xs:annotation>
+					<xs:documentation>
+						Used to change the current damage. Takes the damage before change as a and sets it using b and op. Example is setting the incoming damage to 1 so a pet can take a certain number of hits.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="b" type="xs:string" use="required"/>
+					<xs:attribute name="op" type="Operator" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="changeduration">
+				<xs:annotation>
+					<xs:documentation>
+						Used to change the current duration. Takes the duration before change as a and sets it using b and op. Starts the duration over even if it was half done.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="b" type="xs:string" use="required"/>
+					<xs:attribute name="op" type="Operator" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="changehealth">
+				<xs:annotation>
+					<xs:documentation>
+						Used to change the current target's health by +- the value set by a/b/op.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="changetotalduration">
+				<xs:annotation>
+					<xs:documentation>
+						Used to change the total duration. Takes the duration before change as a and sets it using b and op. If a state is half done, it will still be half done after this.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="b" type="xs:string" use="required"/>
+					<xs:attribute name="op" type="Operator" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			
+			
+			<xs:element name="clearcriticals">
+				<xs:annotation>
+					<xs:documentation>
+						Removes all current criticals out of the current combat event
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="clearproxy">
+				<xs:annotation>
+					<xs:documentation>
+						Clears the current proxy of given index of the current entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="index" type="xs:nonNegativeInteger" default="0"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="clonebackpack">
+				<xs:annotation>
+					<xs:documentation>
+						Clones the source's backpack into the target's
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="combatsupertype">
+				<xs:annotation>
+					<xs:documentation>
+						When used inside of a combat Event, checks if the current supertype matches. If so, it passes true. (Can only be spell or attack)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="supertype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="combateffecttype">
+				<xs:annotation>
+					<xs:documentation>
+						When used inside of a combat Event, checks if the current effecttype matches. If so, passes true. Can be any effecttype.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="compare">
+				<xs:annotation>
+					<xs:documentation>
+						Compares two values, A and B, using the operator choosen. Passes to below when true.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="source" type="xs:string"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" use="required"/>
+					<xs:attribute name="op" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="complete">
+				<xs:annotation>
+					<xs:documentation>
+						Used in orders, completes the current order when called
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="condition">
+				<xs:annotation>
+					<xs:documentation>
+						Used to check against certain conditions or compare two values. Passes to below if returns true.&lt;br /&gt;
+						&lt;b&gt;Try to use other conditions actions before using this one (compare, cantarget, etc.)&lt;/b&gt;
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="test" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Valid operators are EQUALS "eq", NOT_EQUALS "ne", LESS_THAN "lt", LESS_THAN_OR_EQUALS "le", GREATER_THAN "gt", GREATER_THAN_OR_EQUALS "ge". Can also check for "isready", which returns true if the ability is ready to activate.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="consume">
+				<xs:annotation>
+					<xs:documentation>
+						Checks for the given item number and if the recipe is used/charges are counted and consumes them, usually resulting in a live unit morphing into another unit as a result. Exmaple: Ground to winged courier
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="item" type="xs:string" use="required"/>
+					<xs:attribute name="count" type="xs:string" default="1"/>
+					<xs:attribute name="userecipe" type="xs:boolean" default="false"/>
+					<xs:attribute name="ignorecharge" type="xs:boolean" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="currentdamagesupertype">
+				<xs:annotation>
+					<xs:documentation>
+						Only used in &#60;ondamage /&#62; and &#60;ondamaged /&#62;. Checks if the current supertype matches. If so, passes true. (Can only be spell or attack)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="supertype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="currentdamageeffecttype">
+				<xs:annotation>
+					<xs:documentation>
+						Only used in &#60;ondamage /&#62; and &#60;ondamaged /&#62;. Checks if the current effecttype matches. If so, passes true. Can be any effecttype.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="damage">
+				<xs:annotation>
+					<xs:documentation>
+						Deals the given damage from the source to the target of the given effecttype. Can change the damage based on b/op.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+						<xs:attribute name="source" type="EntityType" default="source_entity"/>
+						<xs:attribute name="target" type="EntityType" default="target_entity"/>
+						<xs:attribute name="min" type="xs:string" default="0">
+							<xs:annotation>
+								<xs:documentation>
+									Has to be a number, cannot be a variable. CAN ONLY USE MIN/MAX OR AMOUNT, NOT BOTH.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="max" type="xs:string" default="0">
+							<xs:annotation>
+								<xs:documentation>
+									Has to be a number, cannot be a variable. CAN ONLY USE MIN/MAX OR AMOUNT, NOT BOTH.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="amount" type="xs:string" default="0">
+							<xs:annotation>
+								<xs:documentation>
+									Has to be a number, cannot be a variable. CAN ONLY USE MIN/MAX OR AMOUNT, NOT BOTH.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="effecttype" type="xs:string"/>
+						<xs:attribute name="nonlethal" type="xs:boolean" default="false">
+							<xs:annotation>
+								<xs:documentation>
+									Can this damage kill?
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="b" type="xs:string" default="0">
+							<xs:annotation>
+								<xs:documentation>
+									CAN be a variable - use this to change damage on the fly
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="op" type="Operator" default="none"/>
+						<xs:attribute name="inflictor" type="EntityType" default="this_entity"/>
+						<xs:attribute name="supertype" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="damagesupertype">
+				<xs:annotation>
+					<xs:documentation>
+						When used inside of a damage Event, checks if the current supertype matches. If so, it passes true. (Can only be spell or attack)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="supertype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="damageeffecttype">
+				<xs:annotation>
+					<xs:documentation>
+						When used inside of a damage Event, checks if the current effecttype matches. If so, passes true. Can be any effecttype.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="deactivatemodifierkey">
+				<xs:annotation>
+					<xs:documentation>
+						Turns off the named modifier key of the entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="defer">
+				<xs:annotation>
+					<xs:documentation>
+						Defers the application of a state for a set amoutn of time
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="time" type="xs:string" use="required"/>
+					<xs:attribute name="mult" type="xs:string" default="0"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="delete">
+				<xs:annotation>
+					<xs:documentation>
+						The source deletes the target entity from the world
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="disjoint">
+				<xs:annotation>
+					<xs:documentation>
+						Disjoints the target entity, causing any midair projectiles to not hit this target
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="dispel">
+				<xs:annotation>
+					<xs:documentation>
+						Removes all of the states with the type given off the target
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="type" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="distance">
+				<xs:annotation>
+					<xs:documentation>
+						Returns the distance between the source and target (in units)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="else">
+				<xs:annotation>
+					<xs:documentation>
+						Everything that can return true/false causes an else to happen after the tag close. For example, can be used to cover situations outside of the condition you are testing. Only usable AFTER something that would return it anyawy.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="elsecondition">
+				<xs:annotation>
+					<xs:documentation>
+						Used to check against certain conditions or compare two values. Passes to below if returns true. Replaces an else command.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="test" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Valid operators are EQUALS "eq", NOT_EQUALS "ne", LESS_THAN "lt", LESS_THAN_OR_EQUALS "le", GREATER_THAN "gt", GREATER_THAN_OR_EQUALS "ge". Can also check for "isready", which returns true if the ability is ready to activate.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="entitytype">
+				<xs:annotation>
+					<xs:documentation>
+						Checks if the target is the given entity type. If it is, passes true.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="type" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="evaluate">
+				<xs:annotation>
+					<xs:documentation>
+						Evaluates the given math and returns it as the result.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="expire">
+				<xs:annotation>
+					<xs:documentation>
+						Expires the entity (a state) immediately
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="expirestate">
+				<xs:annotation>
+					<xs:documentation>
+						The source expires a state named Name off the target
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="forgetattacks">
+				<xs:annotation>
+					<xs:documentation>
+						Causes the target to stop current attacks and remove current aquired targets. Used when a hero goes stealth mainly so they do not finish an attack and break the stealth
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="givemana">
+				<xs:annotation>
+					<xs:documentation>
+						The source gives the target the amount worth of mana after the b/op operation
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="amount" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Cannot be a variable, has to be a number
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="a" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Cannot be a variable, has to be a number
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="hasmodifier">
+				<xs:annotation>
+					<xs:documentation>
+						Checks if the target entity has the named modifier active. If yes, passes true
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="heal">
+				<xs:annotation>
+					<xs:documentation>
+						The source heals the target the amount worth of health after the a/b/op
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="invalidate">
+				<xs:annotation>
+					<xs:documentation>
+						Used in &#60;checkcost /&#62; and &#60;activatecost /&#62; to invalidate the cast of an ability if certain conditions are met. When called, just cancels the cast of the ability as if it never happened.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="kill">
+				<xs:annotation>
+					<xs:documentation>
+						The source kills the target instantly.&lt;br /&gt;
+						See &#60;delete /&#62; if you simply want to remove the entity.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="experiencebountymul" type="xs:string" default="1.0">
+						<xs:annotation>
+							<xs:documentation>
+								Experience the target gives when it dies from this action
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="goldbountymult" type="xs:string" default="1.0">
+						<xs:annotation>
+							<xs:documentation>
+								Gold the target gives when it dies from this action
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="nocorpse" type="xs:boolean" default="false"/>
+					<xs:attribute name="nodeathanim" type="xs:boolean" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="killillusions">
+				<xs:annotation>
+					<xs:documentation>
+						If the current target was an illusion, kills it instantly
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="killtrees">
+				<xs:annotation>
+					<xs:documentation>
+						Kills all the trees in the radius or kill the targeted tree.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="radius" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								No radius means to kill the target entity if it is a tree
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="usealtdeathanims" type="xs:boolean" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="levelpets">
+				<xs:annotation>
+					<xs:documentation>
+						Levels the named pets to the value level
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="value" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Usually this is "level", so when an ability levels up it transfers it's current level to the pet
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="lockbackpack">
+				<xs:annotation>
+					<xs:documentation>
+						Locks the entity's backpack so any items in it cannot be dropped, sold or moved and that entity cannot purchase more into the backpack
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="morph">
+				<xs:annotation>
+					<xs:documentation>
+						The source morphs the target into the named entity. Usually a self cast
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="multcharges">
+				<xs:annotation>
+					<xs:documentation>
+						Multiplies the entity's charges by the value and sets that as the new number of charges
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="negate">
+				<xs:annotation>
+					<xs:documentation>
+						Negates the effects of an offensive spell targetted at the owner when triggered.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="immunitytype" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="order">
+				<xs:annotation>
+					<xs:documentation>
+						The source issues an order of the given command to the target unit.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityAndPositionType" default="target_entity"/>
+					<xs:attribute name="range" type="xs:string"/>
+					<xs:attribute name="command" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Can be such things as attack, wander, stop, assist, follow, hold, etc. Can also be "event" which calls an order.entity of the given OrderName
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="parameter" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Unused
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="queue" type="QueuePositionType" default="back">
+						<xs:annotation>
+							<xs:documentation>
+								Can be set to front or back
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="force" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Forces the entity to do this order and nothing else for the duration
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="forceduration" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Only used if force is true, and says how long it lasts
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="restrict" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Sets to true if the event order is used
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="ordername" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Name of the order.entity to use
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="value0" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Unused
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="duration" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Duration of the order
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="block" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>
+								Used in tutorial, unused
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="peekstack">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the current stack as the result
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="ping">
+				<xs:annotation>
+					<xs:documentation>
+						Issues a map ping of the given name at the target position
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="position" type="EntityAndPositionType" default="target_position"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="playanim">
+				<xs:annotation>
+					<xs:documentation>
+						Plays the animation of given Name with X variations included at the given speed and length
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="variations" type="xs:string" default="0"/>
+					<xs:attribute name="channel" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Artisty-Thing
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="speed" type="xs:string" default="1.0"/>
+					<xs:attribute name="length" type="xs:string"/>
+					<xs:attribute name="seq" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Used in animations used in quick succession that you don't want reset between
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="playeffect">
+				<xs:annotation>
+					<xs:documentation>
+						Plays the listed effect at the source position/entity with a given owner
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="effect" type="xs:string" use="required"/>
+					<xs:attribute name="source" type="EntityAndPositionType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityAndPositionType"/>
+					<!--<xs:attribute name="gtarget" type="EntityAndPositionType"/>-->
+					<xs:attribute name="owner" type="EntityType" default="source_entity"/>
+					<xs:attribute name="occlude" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Should this effect hide itself in fog?
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="playtauntsound">
+				<xs:annotation>
+					<xs:documentation>
+						The source plays his taunting sound at the target
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="popentity">
+				<xs:annotation>
+					<xs:documentation>
+						Removes the top entity stack item
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="popstack">
+				<xs:annotation>
+					<xs:documentation>
+						Removes the top value stack item
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="popup">
+				<xs:annotation>
+					<xs:documentation>
+						The source plays popup Name at the target position with the value of a/b/op
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" default="source_entity"/>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="a" type="xs:string" default="0"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="print">
+				<xs:annotation>
+					<xs:documentation>
+						Prints the text in the console when called
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="text" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="printdebuginfo">
+				<xs:annotation>
+					<xs:documentation>
+						Prints the debug information into the console when called
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="printvalue">
+				<xs:annotation>
+					<xs:documentation>
+						Prints the given value with a custom label (if wanted) when called
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="label" type="xs:string"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="protecteddeath">
+				<xs:annotation>
+					<xs:documentation>
+						The source protects the target from death, used in Aegis
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="push">
+				<xs:annotation>
+					<xs:documentation>
+						The source pushes the target the value force/forceb/forceop for the given duration
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityAndPositionType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="force" type="xs:string" use="required"/>
+					<xs:attribute name="forceb" type="xs:string" default="0"/>
+					<xs:attribute name="forceop" type="Operator" default="none"/>
+					<xs:attribute name="duration" type="xs:string" default="0"/>
+					<xs:attribute name="frame" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Instead of duration, pushes every frame as long as the push is applied
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="perpendicular" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Pushes in a perpendicular direction from the source. Used as a "push to the side" movement
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="pushability">
+				<xs:annotation>
+					<xs:documentation>
+						Pushes the given named ability onto the stack
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="source" type="EntityType"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="pushentity">
+				<xs:annotation>
+					<xs:documentation>
+						Pushes the given named entity onto the stack, OR, searches in a radius for the first available target and pushes that entity onto the stack
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="xs:string"/>
+					<xs:attribute name="searchfortarget" type="xs:boolean" default="false"/>
+					<xs:attribute name="searchorigin" type="EntityAndPositionType" default="source_entity"/>
+					<xs:attribute name="radius" type="xs:string" default="0"/>
+					<xs:attribute name="targetscheme" type="xs:string"/>
+					<xs:attribute name="ignoreinvulnerable" type="xs:boolean" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="pushentitybyname">
+				<xs:annotation>
+					<xs:documentation>
+						Pushes the given named entity onto the stack
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="pushentityproxy">
+				<xs:annotation>
+					<xs:documentation>
+						Pushes the given named entity's proxy (by index) onto the stack
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="index" default="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:nonNegativeInteger">
+								<xs:maxInclusive value="3"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="pushentitysearch">
+				<xs:annotation>
+					<xs:documentation>
+						Searches in a radius for the first available target and pushes that entity onto the tsack
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="origin" type="EntityAndPositionType" default="source_position"/>
+					<xs:attribute name="radius" type="xs:string" default="0"/>
+					<xs:attribute name="targetscheme" type="xs:string" use="required"/>
+					<xs:attribute name="ignoreinvulnerable" type="xs:boolean" default="false"/>
+					<xs:attribute name="global" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Sets it to a global search instead of a radius
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="pushstack">
+				<xs:annotation>
+					<xs:documentation>
+						Pushes the given value after a/b/op onto the stack
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="recallpets">
+				<xs:annotation>
+					<xs:documentation>
+						Causes the named pet to get a move order back to its owner
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="reducecooldown">
+				<xs:annotation>
+					<xs:documentation>
+						Reduces the cooldown of the entity by the duration given
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="source" type="EntityType"/>
+					<xs:attribute name="duration" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="refreshabilities">
+				<xs:annotation>
+					<xs:documentation>
+						The source refreshes the target's abilities
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="refreshinventoryitems">
+				<xs:annotation>
+					<xs:documentation>
+						The source refreshes the target's items in their inventory except those in the exclude line, seperated by spaces
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="excluded" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Item name that should be excluded from the refresh.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="removecharge">
+				<xs:annotation>
+					<xs:documentation>
+						Removes one charge from the entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="resetattackcooldown">
+				<xs:annotation>
+					<xs:documentation>
+						Resets the source's attack cooldown
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="resetcooldown">
+				<xs:annotation>
+					<xs:documentation>
+						Resets the cooldown of the entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="resettimer">
+				<xs:annotation>
+					<xs:documentation>
+						Resets the timer of the entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="resettouches">
+				<xs:annotation>
+					<xs:documentation>
+						Resets the touches of the source
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="retarget">
+				<xs:annotation>
+					<xs:documentation>
+						Used for projectiles, retargets it towards the target in mid-flight
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityAndPositionType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="return">
+				<xs:annotation>
+					<xs:documentation>
+						Causes a projectile to be returned back to its origin
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="savehealth">
+				<xs:annotation>
+					<xs:documentation>
+						Saves the current target's health to this entity so it can be used later through the "healthlost" variable
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="scaledamage">
+				<xs:annotation>
+					<xs:documentation>
+						Scales the current incoming damage by the % given through scale
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="scale" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setaccumulator">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the entity's accumulator based on a/b/op. Accumulator is a permenant value that persists through all events.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="value" type="xs:string"/>
+					<xs:attribute name="a" type="xs:string"/>
+					<xs:attribute name="valueb" type="xs:string" default="0"/>
+					<xs:attribute name="valueop" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setactivemodifierkey">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the active modifier key of the entity to the name given
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setattackactioneffect">
+				<xs:annotation>
+					<xs:documentation>
+						Overrides the current attack's action effect to the effect given
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType"/>
+					<xs:attribute name="target" type="EntityType"/>
+					<xs:attribute name="effect" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setattackimpacteffect">
+				<xs:annotation>
+					<xs:documentation>
+						Overrides the current attack's impact effect to the effect given
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="effect" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="etattackprojectile">
+				<xs:annotation>
+					<xs:documentation>
+						Overrides the current attack's projectile to the one named
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setcharges">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the charges of the entity to the value of a/b/op
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="target" type="EntityType"/>
+					<xs:attribute name="timed" type="xs:string"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setdamage">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the damage of the current event to the value of a/b/op
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="seteffecttype">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the effecttype of the value in name to the given type
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								An example of this is combat_damagetype in the &#60;onpreimpact /&#62; event to change the attacks effecttype
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setent0">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the entity as the ent0 variable that can be recalled later. Only exists inside of the event it is made, so it 'expires' quickly.&lt;br /&gt;
+						Either set the entity by its instance name or by a given entity.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType"/>
+					<xs:attribute name="name" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setent1">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the entity as the ent1 variable that can be recalled later. Only exists inside of the event it is made, so it 'expires' quickly.&lt;br /&gt;
+						Either set the entity by its instance name or by a given entity.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType"/>
+					<xs:attribute name="name" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setent2">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the entity as the ent2 variable that can be recalled later. Only exists inside of the event it is made, so it 'expires' quickly.&lt;br /&gt;
+						Either set the entity by its instance name or by a given entity.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType"/>
+					<xs:attribute name="name" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setent3">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the entity as the ent3 variable that can be recalled later. Only exists inside of the event it is made, so it 'expires' quickly.&lt;br /&gt;
+						Either set the entity by its instance name or by a given entity.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType"/>
+					<xs:attribute name="name" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setgoldlossbonus">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the target's bonus gold lost from death to the value given
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setgoldlossmultiplier">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the target's gold lost from death multiplied by the value
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setignoreattackcooldown">
+				<xs:annotation>
+					<xs:documentation>
+						Unused
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setparam">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the parameter of the entity to the value of a/b/op. Parameter is a permenant value that persists through all events.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setproxy">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the proxy of the entity to the target or can search for a target instead of declaring one outright. The proxy is a permenant entity that is remembered through all events of that entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="proxy" type="EntityType"/>
+					<xs:attribute name="searchfortarget" type="xs:boolean" default="false"/>
+					<xs:attribute name="searchorigin" type="EntityType" default="source_entity"/>
+					<xs:attribute name="radius" type="xs:string" default="false"/>
+					<xs:attribute name="targetscheme" type="xs:string"/>
+					<xs:attribute name="ignoreinvulnerable" type="xs:boolean" default="false"/>
+					<xs:attribute name="index" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Index of the proxy for orders
+							</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:nonNegativeInteger">
+								<xs:maxInclusive value="3"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setrespawnhealthmultiplier">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the health of the target when they respawn to the value as a percent
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setrespawnmanamultiplier">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the mana of the target when they respawn to the value as a percent
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setrespawnposition">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the respawn position of the target when they respawn to the position listed
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="position" type="EntityAndPositionType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setrespawntime">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the whole respawn time of the target when they die to the value of a/b/op
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setrespawntimebonus">
+				<xs:annotation>
+					<xs:documentation>
+						Changes the bonus respawn time of the target to the value listed when they are killed (used in &#60;onkilled /&#62; )
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setrespawntimemultiplier">
+				<xs:annotation>
+					<xs:documentation>
+						Changes the bonus respawn time of the target to their bonus time multiplied by the value listed when they are killed (used in &#60;onkilled /&#62; )
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setvalue">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the named value to the value of a/b/op. An example of values are damage_attempted, combat_lifesteal, combat_deflection, and combat_truestrike
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setvar0">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the value of a/b/op to the variable var0, which can be called later in the same event. Only exists inside of the event it is created.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" default="this_entity"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setvar1">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the value of a/b/op to the variable var1, which can be called later in the same event. Only exists inside of the event it is created.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" default="this_entity"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setvar2">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the value of a/b/op to the variable var2, which can be called later in the same event. Only exists inside of the event it is created.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" default="this_entity"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setvar3">
+				<xs:annotation>
+					<xs:documentation>
+						Sets the value of a/b/op to the variable var3, which can be called later in the same event. Only exists inside of the event it is created.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" default="this_entity"/>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="spawnaffector">
+				<xs:annotation>
+					<xs:documentation>
+						Spawns a named affector at the target position or on the target entity with any number of properties
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="source" type="EntityAndPositionType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityAndPositionType" default="target_entity"/>
+					<xs:attribute name="firstimpact" type="EntityType"/>
+					<xs:attribute name="direction" type="EntityAndPositionType" default="target_position">
+						<xs:annotation>
+							<xs:documentation>
+								Direction the affector is facing
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="firsttarget" type="EntityType" default="target_entity"/>
+					<xs:attribute name="level" type="xs:string"/>
+					<xs:attribute name="duration" type="xs:string"/>
+					<xs:attribute name="owner" type="EntityType" default="source_entity"/>
+					<xs:attribute name="ischannel" type="xs:boolean" default="false"/>
+					<xs:attribute name="istoggle" type="xs:boolean" default="false"/>
+					<xs:attribute name="distance" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Distance away from the target the affector spawns
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="count" type="xs:string" default="1"/>
+					<xs:attribute name="countb" type="xs:string" default="0"/>
+					<xs:attribute name="countop" type="Operator" default="none"/>
+					<xs:attribute name="distribute" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Distributes the count worth of affectors evenly around the target going outwards (ex: "even")
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="proxy" type="EntityType">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the proxy entity
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="pushentity" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Pushes this entity onto the stack
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="param" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the parameter of this affector
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="positionorigin" type="EntityType" default="source_entity">
+						<xs:annotation>
+							<xs:documentation>
+								Used for setting the origin for the position modifiers
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="positionvalue" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Radius
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="positionmodifier" type="PositionModifierType"/>
+					<xs:attribute name="ignore" type="EntityType">
+						<xs:annotation>
+							<xs:documentation>
+								Entity to be ignored
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="spawnillusion">
+				<xs:annotation>
+					<xs:documentation>
+						Spawns count number of illusions of the target for lifetime duration. The damage they deal and take can be changed, along with the effects associated with them. Owner is who controls them.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="proxy" type="EntityType"/>
+					<xs:attribute name="count" type="xs:string" default="1"/>
+					<xs:attribute name="receivedamagemultiplier" type="xs:string" default="1.0"/>
+					<xs:attribute name="inflictdamagemultiplier" type="xs:string" default="1.0"/>
+					<xs:attribute name="spawneffect" type="xs:string"/>
+					<xs:attribute name="deatheffect" type="xs:string"/>
+					<xs:attribute name="owner" type="EntityType" default="source_entity"/>
+					<xs:attribute name="uncontrollable" type="xs:string" default="false"/>
+					<xs:attribute name="lifetime" type="xs:string"/>
+					<xs:attribute name="fixedposition" type="xs:string" default="false"/>
+					<xs:attribute name="pushentity" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Pushes the illusion onto the stack
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="playdeathanim" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Illusion plays the death animations of the unit copied when it is killed or not
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="inheritactions" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Smoothly inherits the actions of the unit spawned so if they were spawned on top of them, it would be impossible to tell the difference between real and illusion
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="spawncircular" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Spawns illusions in a circle instead of on top of the target, moves the target as part of the circle
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="spawncircularradius" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Radius of the circle when spawncircular is true
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="spawnitem">
+				<xs:annotation>
+					<xs:documentation>
+						The source spawns the named item at the target, offset by the distance (x/y). Offsetspace is who the offset is based off of (what direction they are facing is 'front')
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="offset" type="xs:string" default="0 0"/>
+					<xs:attribute name="offsetspace" type="EntityAndPositionType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="spawnlinearaffector">
+				<xs:annotation>
+					<xs:documentation>
+						Spawns a named linear affector at the target position or on the target entity with any number of properties. basically a line of affectors of the given name as far as the target_position
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityAndPositionType" default="target_entity"/>
+					<xs:attribute name="direction" type="EntityAndPositionType" default="target_position">
+						<xs:annotation>
+							<xs:documentation>
+								Direction the affector is facing
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="firsttarget" type="EntityType" default="target_entity"/>
+					<xs:attribute name="level" type="xs:string"/>
+					<xs:attribute name="owner" type="EntityType" default="source_entity"/>
+					<xs:attribute name="ischannel" type="xs:boolean" default="false"/>
+					<xs:attribute name="istoggle" type="xs:boolean" default="false"/>
+					<xs:attribute name="pushentity" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Pushes this entity onto the stack
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="targetorigin" type="EntityAndPositionType" default="target_entity"/>
+					<xs:attribute name="targetvalue" type="xs:string"/>
+					<xs:attribute name="targetmodifier" type="PositionModifierType"/>
+					<xs:attribute name="directionorigin" type="EntityAndPositionType" default="target_position"/>
+					<xs:attribute name="directionvalue" type="xs:string"/>
+					<xs:attribute name="directionmodifier" type="PositionModifierType"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="spawnprojectile">
+				<xs:annotation>
+					<xs:documentation>
+						Spawns a projectile from the source (with offset) to the target, see the specific section for orbital attributes
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityAndPositionType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityAndPositionType" default="target_entity"/>
+					<xs:attribute name="owner" type="EntityType"/>
+					<xs:attribute name="ignore" type="EntityType"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="count" type="xs:string"/>
+					<xs:attribute name="effecttype" type="xs:string"/>
+					<xs:attribute name="ignoreinvulnerable" type="xs:string"/>
+					<xs:attribute name="bind" type="EntityType">
+						<xs:annotation>
+							<xs:documentation>
+								Binds the entity listed to the projectile
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="bindturn" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Makes the bound entity turn in the direction the projectile does
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="bindnopush" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Makes it so binding to the projectile does not stop channeling
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="unbindondeath" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Unbinds the bound entity if they die
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="bindstate" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								A state to be on the bound target as long as they are bound
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="ignoretargetoffset" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Ignores the target's offset when it binds them
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="proxy" type="EntityType">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the listed entity as the proxy of this projectile
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="offset" type="xs:string" default="0 0 0"/>
+					<xs:attribute name="offsetspace" type="EntityAndPositionType" default="source_entity">
+						<xs:annotation>
+							<xs:documentation>
+								Sets who the offset is based off of
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="ischannel" type="xs:boolean" default="false"/>
+					<xs:attribute name="istoggle" type="xs:boolean" default="false"/>
+					<xs:attribute name="pushentity" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Pushes this projectile onto the stack when created
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="param" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the param of this projectile when created
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="noresponse" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Makes it so this projectile cannot be responded to. This involves things like Nullstone or reactionary abilities. It will not proc those
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					
+					<xs:attribute name="orbitstartingtheta" type="xs:string"/>
+					<xs:attribute name="orbitstartingthetatime" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="spawnunit">
+				<xs:annotation>
+					<xs:documentation>
+						The source spawns a unit (Name) at the target, spawning count number of them with other properties
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityAndPositionType" default="target_entity"/>
+					<xs:attribute name="owner" type="EntityType"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="count" type="xs:string" default="1"/>
+					<xs:attribute name="duration" type="xs:string"/>
+					<xs:attribute name="teamshare" type="xs:string" default="false"/>
+					<xs:attribute name="mount" type="EntityType">
+						<xs:annotation>
+							<xs:documentation>
+								Mounts (binds) the unit to the entity
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="bind" type="EntityType">
+						<xs:annotation>
+							<xs:documentation>
+								Binds the entity to this unit
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="fixedposition" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Fixes the position of the unit to where it spawns
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="inheritmodifiers" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Makes the unit inherit the modifiers of the source
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="ischannel" type="xs:string" default="false"/>
+					<xs:attribute name="istoggle" type="xs:string" default="false"/>
+					<xs:attribute name="maxactive" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Only this number of this unit can be active at once
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="facing" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the facing direction of the spawned unit in relation to the entity listed
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="angle" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Angle it is turned when spawned
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="offset" type="xs:string" default="0 0 0">
+						<xs:annotation>
+							<xs:documentation>
+								Offset from the offsetspace entity
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="offsetspace" type="EntityAndPositionType" default="target_entity">
+						<xs:annotation>
+							<xs:documentation>
+								Entity is who the offset is based off of for where it spawns
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="pushentity" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Pushes this unit into the stack when created
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="lifetime" type="xs:string" default="0">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the lifetime to the value of a/b/op
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="lifetimeb" type="xs:string" default="0"/>
+					<xs:attribute name="lifetimeop" type="Operator" default="none"/>
+					<xs:attribute name="proxy" type="EntityType">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the proxy of this unit to the entity listed
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="team" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Sets the team of the spawned unit. The "source" entity's team is used by default. Usually set as "result" after an &#60;evaluate a="target_team" /&#62; call
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="snaptargettogrid" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Snaps the unit to the specified grid
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="splashdamage">
+				<xs:annotation>
+					<xs:documentation>
+						Causes a splash damage call usually in &#60;onattack /&#62; or added as an impact action for onattackstart. It only hits the targets and effecttypes that are valid. Splash deals value of a/b/op
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType"/>
+					<xs:attribute name="targetscheme" type="xs:string" use="required"/>
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+					<xs:attribute name="radius" type="xs:string" use="required"/>
+					<xs:attribute name="a" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Can use "total_adjusted_damage" if this is splashing normal attacks
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+					<xs:attribute name="nonlethal" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								"false" if the splash can kill
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="centerontarget" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Centers the splash circle on the target hit instead of on the attacking hero. Used for ranged splash.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="supertype" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="split">
+				<xs:annotation>
+					<xs:documentation>
+						Used in &#60;onattack /&#62; and splits the attack into count # of different projectiles that hit units within the range/targetscheme given. Damage the split shots do is multiplied by the damagemult.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="count" type="xs:string" use="required"/>
+					<xs:attribute name="range" type="xs:string" use="required"/>
+					<xs:attribute name="damagemult" type="xs:string" use="required"/>
+					<xs:attribute name="targetscheme" type="xs:string" use="required"/>
+					<xs:attribute name="fulldamageonmaintarget" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="startattack">
+				<xs:annotation>
+					<xs:documentation>
+						Starts an attack from the source to the target as long as the targetscheme and effecttype pass.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="targetscheme" type="xs:string" use="required"/>
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+					<xs:attribute name="facetarget" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Causes the source to face the target
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="startcooldown">
+				<xs:annotation>
+					<xs:documentation>
+						Starts the cooldown of the entity listed or toolname (ex: spell name) if one is given for the duration of a/b/op
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="toolname" type="xs:string" default=""/>
+					<xs:attribute name="duration" type="xs:string"/>
+					<xs:attribute name="durationb" type="xs:string" default="0"/>
+					<xs:attribute name="durationop" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="startexpire">
+				<xs:annotation>
+					<xs:documentation>
+						Starts the expire time of the listed entity (a state) if it is continuous and has a duration that can run out
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="startfade">
+				<xs:annotation>
+					<xs:documentation>
+						Starts the entity listed to fade into stealth over the duration of a/b/op. If no duratoin is given, uses the fadetime of the state. Also a stealthtype is required.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="a" type="xs:string"/>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="starttimer">
+				<xs:annotation>
+					<xs:documentation>
+						Starts the timer of the entity listed for the duration of a/b/op
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+					<xs:attribute name="duration" type="xs:string" use="required"/>
+					<xs:attribute name="durationb" type="xs:string" default="0"/>
+					<xs:attribute name="durationop" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="takecontrol">
+				<xs:annotation>
+					<xs:documentation>
+						Transfers the target to be under the source's control. Maxactive limits the maximum number of units you can have active through this call.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="maxactive" type="xs:string"/>
+					<xs:attribute name="inheritmodifiers" type="xs:string" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="takemana">
+				<xs:annotation>
+					<xs:documentation>
+						The source takes the target's mana in the amount of a/b/op
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="amount" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Can only be a number, not a variable
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="b" type="xs:string" default="0"/>
+					<xs:attribute name="op" type="Operator" default="none"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="targettype">
+				<xs:annotation>
+					<xs:documentation>
+						Checks if the target is the given target type. If it is, passes true.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="entity" type="EntityType"/>
+					<xs:attribute name="type" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="teleport">
+				<xs:annotation>
+					<xs:documentation>
+						Teleports the source to the target
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityAndPositionType" default="target_entity"/>
+					<xs:attribute name="interpolate" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Interpolates between the two points to try to make it "smoother"
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="facetarget" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Faces the source towards the target when moved
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="specifyangle" type="xs:boolean" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Can specify the angle of the source at the end of the teleport. used with angle
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="angle" type="xs:string" default="0"/>
+					<xs:attribute name="positionorigin" type="EntityType" default="source_entity"/>
+					<xs:attribute name="positionvalue" type="xs:string"/>
+					<xs:attribute name="positionmodifier" type="PositionModifierType"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="testactivate">
+				<xs:annotation>
+					<xs:documentation>
+						When used inside of a damage Event, checks if the current effecttype matches. If so, passes true. Can be any effecttype.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="distance" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="testnearby">
+				<xs:annotation>
+					<xs:documentation>
+						Used mainly in the &#60;onthink /&#62; of NPCs to make them check for conditions. Returns a number based on the valid targets in range that met the conditions of the test
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="radius" type="xs:string" use="required"/>
+					<xs:attribute name="targetscheme" type="xs:string" use="required"/>
+					<xs:attribute name="ignoreinvulnerable" type="xs:boolean" default="false"/>
+					<xs:attribute name="origin" type="EntityType" default="source_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="toggleoff">
+				<xs:annotation>
+					<xs:documentation>
+						Toggles off the named ability when used
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="transferitemstohero">
+				<xs:annotation>
+					<xs:documentation>
+						Used only by couriers at the moment, runs the source (courier) to the target (user of the ability) and tranfers the items the hero owns to him.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="transferstate">
+				<xs:annotation>
+					<xs:documentation>
+						Steals the state named under entity from the target and applies it to the source
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="entity" type="EntityType" default="this_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="unbind">
+				<xs:annotation>
+					<xs:documentation>
+						Unbinds the target from anything he is bound to
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="useability">
+				<xs:annotation>
+					<xs:documentation>
+						Causes the source to use the ability in slot on the target. Can force this for a duration and restrict it's usage as well. Can be used with an order.entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityAndPositionType" default="target_entity"/>
+					<xs:attribute name="slot" type="xs:string"/>
+					<xs:attribute name="queue" type="QueuePositionType" default="front"/>
+					<xs:attribute name="force" type="xs:boolean" default="false"/>
+					<xs:attribute name="forceduration" type="xs:string" default="0"/>
+					<xs:attribute name="restrict" type="xs:boolean" default="false"/>
+					<xs:attribute name="ordername" type="xs:string"/>
+					<xs:attribute name="value0" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Unused
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="block" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Unused
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="useitem">
+				<xs:annotation>
+					<xs:documentation>
+						Causes the source to use the item on the target. Can force this for a duration and restrict it's usage as well. Can be used with an order.entity
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="queue" type="QueuePositionType" default="front"/>
+					<xs:attribute name="force" type="xs:boolean" default="false"/>
+					<xs:attribute name="forceduration" type="xs:string" default="0"/>
+					<xs:attribute name="restrict" type="xs:boolean" default="false"/>
+					<xs:attribute name="ordername" type="xs:string"/>
+					<xs:attribute name="value0" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Unused
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="block" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Unused
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="soullink">
+				<xs:annotation>
+					<xs:documentation>
+						Specific action for Wild Soul
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="breaksoullink">
+				<xs:annotation>
+					<xs:documentation>
+						Specific action for Wild Soul
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="changeteam">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="team" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="clientuitrigger">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="param" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="closeshop"/>
+			
+			<xs:element name="createcamera">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="position" type="xs:string" use="required"/>
+					<xs:attribute name="pushentity" type="xs:boolean" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="giveitem">
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" use="required"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="pushentity" type="xs:boolean" default="false"/>
+					<xs:attribute name="stash" type="xs:boolean" default="false"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="givegold">
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="amount" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="lockcontrol">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="lockitem">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="lockshop">
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="movecamera">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="positionname" type="xs:string"/>
+					<xs:attribute name="positionentity" type="xs:string"/>
+					<xs:attribute name="interpolate" type="xs:string"/>
+					<xs:attribute name="duration" type="xs:string" default="0"/>
+					<xs:attribute name="block" type="xs:boolean"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="openshop">
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setactiveshop">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setaicontroller">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="controller" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setcamera">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="camera" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setexperience">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setgamephase">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="duration" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setgold">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="sethero">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="hero" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setinterface">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setlevel">
+				<xs:annotation>
+					<xs:documentation>
+						Set the &lt;b&gt;ability&lt;/b&gt; level
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setoverlayinterface">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setowner">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="player" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setscriptvalue">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setteamsize">
+				<xs:complexType>
+					<xs:attribute name="team" type="xs:string" use="required"/>
+					<xs:attribute name="size" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="spawn">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="owner" type="EntityType"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="spawnclientthread">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="spawnneutrals"/>
+			
+			<xs:element name="spawnthread">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="startmatch"/>
+			
+			<xs:element name="terminate"/>
+			
+			<xs:element name="unlockcontrol">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="unlockitem">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="unlockshop">
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="wait">
+				<xs:complexType>
+					<xs:attribute name="duration" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="waituntilcompare">
+				<xs:complexType>
+					<xs:attribute name="a" type="xs:string" use="required"/>
+					<xs:attribute name="b" type="xs:string" use="required"/>
+					<xs:attribute name="op" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="waituntilcondition">
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" default="source_entity"/>
+					<xs:attribute name="target" type="EntityType" default="target_entity"/>
+					<xs:attribute name="test" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>
+								Valid operators are EQUALS "eq", NOT_EQUALS "ne", LESS_THAN "lt", LESS_THAN_OR_EQUALS "le", GREATER_THAN "gt", GREATER_THAN_OR_EQUALS "ge". Can also check for "isready", which returns true if the ability is ready to activate.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="waituntilmessage">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="yield"/>
+			
+			<xs:element name="foreachitem">
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="foreachplayer">
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="loop"/>
+			
+			<xs:element name="scriptcondition">
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setpos0">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string"/>
+					<xs:attribute name="entity" type="EntityType"/>
+					<xs:attribute name="offset" type="xs:string"/>
+					<xs:attribute name="offsetspace" type="EntityAndPositionType"/>
+					<xs:attribute name="position" type="EntityAndPositionType"/>
+					<xs:attribute name="positionmodifier" type="PositionModifierType"/>
+					<xs:attribute name="positionend" type="EntityAndPositionType"/>
+					<xs:attribute name="positionvalue" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setpos1">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string"/>
+					<xs:attribute name="entity" type="EntityType"/>
+					<xs:attribute name="offset" type="xs:string"/>
+					<xs:attribute name="offsetspace" type="EntityAndPositionType"/>
+					<xs:attribute name="position" type="EntityAndPositionType"/>
+					<xs:attribute name="positionmodifier" type="PositionModifierType"/>
+					<xs:attribute name="positionend" type="EntityAndPositionType"/>
+					<xs:attribute name="positionvalue" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setpos2">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string"/>
+					<xs:attribute name="entity" type="EntityType"/>
+					<xs:attribute name="offset" type="xs:string"/>
+					<xs:attribute name="offsetspace" type="EntityAndPositionType"/>
+					<xs:attribute name="position" type="EntityAndPositionType"/>
+					<xs:attribute name="positionmodifier" type="PositionModifierType"/>
+					<xs:attribute name="positionend" type="EntityAndPositionType"/>
+					<xs:attribute name="positionvalue" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setpos3">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string"/>
+					<xs:attribute name="entity" type="EntityType"/>
+					<xs:attribute name="offset" type="xs:string"/>
+					<xs:attribute name="offsetspace" type="EntityAndPositionType"/>
+					<xs:attribute name="position" type="EntityAndPositionType"/>
+					<xs:attribute name="positionmodifier" type="PositionModifierType"/>
+					<xs:attribute name="positionend" type="EntityAndPositionType"/>
+					<xs:attribute name="positionvalue" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="while"/>
+			
+			<xs:element name="whilescriptcondition">
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			
+			
+			<xs:element name="transferstates">
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" use="required"/>
+					<xs:attribute name="target" type="EntityType" use="required"/>
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+					<xs:attribute name=" inflictor" type="EntityType"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="releasecontrol">
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="orderdisjoint">
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="selectentity">
+				<xs:complexType>
+					<xs:attribute name="request" type="xs:boolean" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="showchannelbar">
+				<xs:complexType>
+					<xs:attribute name="duration" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="hidechannelbar"/>
+			
+			<xs:element name="combatevent">
+				<xs:complexType>
+					<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="source" type="EntityType"/>
+					<xs:attribute name="target" type="EntityType"/>
+					<xs:attribute name="effecttype" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setattackprojectile">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="getyaw"/>
+			
+			<xs:element name="forceimpact"/>
+			
+			<xs:element name="setprojectilebounds">
+				<xs:complexType>
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+					<xs:attribute name="radius" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="isitem">
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="entity" type="EntityType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="foreachproxy">
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="entity" type="EntityType"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="isready">
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="entity" type="EntityType"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="pushprojectiletarget">
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="entity" type="EntityType"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="clearteamtarget"/>
+			
+			<xs:element name="pushhero"/>
+			
+			<xs:element name="takegold">
+				<xs:complexType>
+					<xs:attribute name="source" type="EntityType" use="required"/>
+					<xs:attribute name="target" type="EntityType" use="required"/>
+					<xs:attribute name="amount" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setdeathanim">
+				<xs:complexType>
+					<xs:attribute name="target" type="EntityType" use="required"/>
+					<xs:attribute name="noanim" type="xs:string" use="required"/>
+					<xs:attribute name="nocorpse" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="setactiverecipe">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	
+	<xs:complexType name="EventType">
+		<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+		
+		<xs:attribute name="priority" type="xs:integer"/>
+		<xs:attribute name="propagatetoillusions" type="xs:boolean"/>
+		<xs:attribute name="activateonbounces" type="xs:boolean"/>
+		<xs:attribute name="effectdescription" type="xs:boolean"/>
+	</xs:complexType>
+	
+	<xs:group name="events">
+		<xs:choice>
+			<xs:element name="modifier">
+				<xs:complexType>
+					<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="key" type="xs:string" use="required"/>
+					<xs:attribute name="modpriority" type="xs:integer"/>
+					<xs:attribute name="priority" type="xs:integer"/>
+					
+					<xs:anyAttribute processContents="skip"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="scriptthread">
+				<xs:complexType>
+					<xs:group ref="actions" minOccurs="0" maxOccurs="unbounded"/>
+					
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="aura">
+				<xs:annotation>
+					<xs:documentation>
+						Causes an aura that has radius and applies the state and/or gadget listed as long as the effecttype and targetscheme are met. The duration is how long the state stays on them outside of the aura.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string"/>
+					<xs:attribute name="state" type="xs:string"/>
+					<xs:attribute name="gadget" type="xs:string"/>
+					<xs:attribute name="proxy" type="EntityType"/>
+					<xs:attribute name="gadgetowner" type="EntityType"/>
+					<xs:attribute name="radius" type="xs:string"/>
+					<xs:attribute name="ischannel" type="xs:string"/>
+					<xs:attribute name="duration" type="xs:string" default="0"/>
+					<xs:attribute name="targetscheme" type="xs:string"/>
+					<xs:attribute name="effecttype" type="xs:string"/>
+					<xs:attribute name="ignoreinvulnerable" type="xs:string" default="false"/>
+					<xs:attribute name="continuous" type="xs:string"/>
+					<xs:attribute name="timeout" type="xs:string"/>
+					<xs:attribute name="condition" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Sets a condition for the state to be applied to enemies
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="reflexivestate" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								A state that is applied to the owner of the aura when an enemy is under its effects
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="propagatecondition" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								Sets a condition for the aura to be active
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="stack" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Lets multiple aura of the same state stack
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="notooltip" type="xs:string" default="false">
+						<xs:annotation>
+							<xs:documentation>
+								Removes the tooltip for the aura
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="onframe" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed once each frame
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onframeimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed once each frame per target (affectors only)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oninterval" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed once each interval (affectors)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onbegin" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						The owner has activated this entity (orders only)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onstart" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has begun to activate
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onprecost" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						A chance for the tool to modifier its activation cost
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onaction" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has reached its action time (called once per activatation)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onpreimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has reached its action time (before impact, called once per valid target)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onpredamage" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This tool's specific damage event only. Runs before damage is even calculated, to modify damage done but after evasion
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ondamageevent" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This tool's specific damage event and damage done. Used mainly in attack abilities to modifier the damage of an attack. Runs right before the damage is done, so you can still modify it
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ondoubleactivate" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Tool has been double-activated (needs to be tagged as double activate)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has reached its action time (called once per valid target)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onimpactinvalid" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has reached its action but the impact was invalid
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oncomplete" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Tool successfully activates (orders only)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oncancel" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Tool failed to activate (orders only)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onactivatestart" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						The owner activated an ability or item (start of activation, earliest point)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onactivateprecost" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						The owner activated an ability or item (before the cost of that ability is taken)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onactivatepreimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						The owner activated an ability or item and it has reached its action time (before impact)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onactivateimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						The owner activated an ability or item and it has reached its action time
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onactivateend" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed after an activated tool reaches the end of its cast time
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onabilitystart" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						The owner has activated an ability other than this entity
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onabilityimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						An ability other than this entity has reached its action time
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onabilityfinish" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						An ability other than this entity has finished sucessfully
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onabilityend" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed after an activated ability other than this entity reaches the end of its cast time
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ontoggleon" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This tool with action type "toggle" has been turned on
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ontoggleoff" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This tool with action type "toggle" has been turned off
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onchannelstart" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						The owner has started the channel time of this entity
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onchannelframe" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed each frame the owner is channeling this tool
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onchannelbreak" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						The owner has stopped channeling before the channel time completed
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onchannelend" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						The owner has completed the full channel time of this entity
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackstart" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner begins an attack (earliest point, good for overriding animations /> adding impact actions)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattack" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner reaches the attack action time
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackpreimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner successfully attacks another entity before damage and evasion
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackpredamage" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner successfully attacks another entity before damage
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackdamageevent" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Called every time this entity deals damage. Includes <damage /> calls
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner successfully attacks another entity and impacts (this is the same time as onattack for melee heroes with no projectile)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackimpactinvalid" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner successfully attacks another entity but the impact was invalid
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackend" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner completes an attack, successful or not
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackedstart" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						An attack has been started on this entity (earliest point, includes spells)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackedpreimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has been attacked, but damage/effects/evasion have not yet been applied (includes spells)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackedpredamage" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has been attacked, but damage/effects have not yet been applied (includes spells)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackeddamageevent" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Called every time this entity takes damage. This includes the <damage /> call
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackedpostimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has been attacked and damage/effects have been applied (does not trigger on a miss/evade, includes spells)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackingstart" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has started an attack (includes spells and damage calls, everything)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackingpreimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner successfully attacks another entity before damage and evasion (includes spells and damage calls, everything)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackingpredamage" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner successfully attacks another entity before damage (includes spells and damage calls, everything)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackingdamageevent" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Called every time this entity deals damage. This is the first event of a <damage /> call (includes spells and damage calls, everything)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onattackingpostimpact" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when the owner successfully attacks another entity after damage and evasion (includes spells and damage calls, everything)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="ondamage" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has dealt some amount of damage (after damage is dealt)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ondamaged" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has taken some amount of damage (after damage is dealt)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onstunned" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has been stunned (no longer used)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onkilled" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has been killed
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onexpired" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has died due to its lifetime expiring
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ondeath">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has dieded
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="EventType">
+							<xs:attribute name="ignoreinvulnerable" type="xs:boolean"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="onkill" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity killed another entity
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onindirectkill" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity indirectly killed another entity (through pets, for example)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onspawn" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when spawn is called
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onrespawn" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Processed when respawn is called
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onlevelup" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Hero levelup
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oninflict" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						New state applied to an entity
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onrefresh" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Resfreshed state on an entity
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oninflicted" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Entity has had a new state applied to it
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onownerrespawn" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity's owner has respawned
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onrelease" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has lost its binding (?)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ontouch" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity collided with another entity (touch needs to be declared, used in projectiles)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ontouched" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This entity has been touched by another entity
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onthink" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Executed before neutral NPC "thinking" occurs
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ontargetacquired" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Executed when a unit changes or acquires a target
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="onlearn" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This ability was just learned for the first time
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onupgrade" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						This tool was leveluped
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oncreate" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Item was created
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onpurchase" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Item was just purchased
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ontimer" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Timer trigger (or finishes/expires)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onpickup" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Item was moved into a new inventory
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="checkcost" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Runs every frame, can call <invalidate /> to 'grey' out an ability until a condition is met / used to check for custom manacosts
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="checktriggeredcost" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Runs when the ability is triggered (if it is toggled, for example). Used to check for custom manacosts.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="activatecost" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Runs when an ability is activated and the manacost is taken (if applicable), used to do custom manacosts or costs for using abilities
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="getthreatlevel" type="EventType">
+				<xs:annotation>
+					<xs:documentation>
+						Used for custom agro scripting, based on base.gamemechanics level of threat
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			
+			<xs:element name="onlobbystart" type="EventType"/>
+			<xs:element name="onaddplayer" type="EventType"/>
+			<xs:element name="onentergame" type="EventType"/>
+			
+			
+			<xs:element name="onready" type="EventType"/>
+			
+			<xs:element name="onchannelingframe" type="EventType"/>
+			
+			<xs:element name="onsmackdowned" type="EventType"/>
+		</xs:choice>
+	</xs:group>
+	
+	<xs:attributeGroup name="SharedUnitAttributes">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		
+		<xs:attribute name="icon" type="xs:string"/>
+		<xs:attribute name="portrait" type="xs:string"/>
+		<xs:attribute name="model" type="xs:string"/>
+		<xs:attribute name="skin" type="xs:string"/>
+		
+		<xs:attribute name="deatheffect" type="xs:string"/>
+		<xs:attribute name="passiveeffect" type="xs:string"/>
+		<xs:attribute name="spawneffect" type="xs:string"/>
+		<xs:attribute name="respawneffect" type="xs:string"/>
+		<xs:attribute name="spawnanim" type="xs:string"/>
+		<xs:attribute name="deathnumanims" type="xs:string"/>
+		<xs:attribute name="deathanim" type="xs:string"/>
+		<xs:attribute name="idleanim" type="xs:string"/>
+		<xs:attribute name="expirenumanims" type="xs:string"/>
+		<xs:attribute name="expireanim" type="xs:string"/>
+		<xs:attribute name="walkanim" type="xs:string"/>
+		
+		<xs:attribute name="destroyedsound" type="xs:string"/>
+		<xs:attribute name="lowhealtheffect" type="xs:string"/>
+		<xs:attribute name="lowhealthsound" type="xs:string"/>
+		<xs:attribute name="goldbountyconsolation" type="xs:string"/>
+		<xs:attribute name="istower" type="xs:string"/>
+		
+		<xs:attribute name="isselectable" type="xs:string"/>
+		<xs:attribute name="preglobalscale" type="xs:string"/>
+		<xs:attribute name="modelscale" type="xs:string"/>
+		<xs:attribute name="effectscale" type="xs:string"/>
+		<xs:attribute name="boundsheight" type="xs:string"/>
+		<xs:attribute name="boundsradius" type="xs:string"/>
+		<xs:attribute name="selectionradius" type="xs:string"/>
+		<xs:attribute name="targetoffset" type="xs:string"/>
+		
+		<xs:attribute name="infoheight" type="xs:string"/>
+		<xs:attribute name="infoscale" type="xs:string"/>
+		
+		<xs:attribute name="prefertouch" type="xs:string"/>
+		
+		<xs:attribute name="movespeed" type="xs:string"/>
+		<xs:attribute name="turnrate" type="xs:string"/>
+		<xs:attribute name="turnsmoothing" type="xs:string"/>
+		<xs:attribute name="unitwalking" type="xs:string"/>
+		<xs:attribute name="treewalking" type="xs:string"/>
+		<xs:attribute name="buildingwalking" type="xs:string"/>
+		<xs:attribute name="cliffwalking" type="xs:string"/>
+		<xs:attribute name="flying" type="xs:string"/>
+		<xs:attribute name="flyheight" type="xs:string"/>
+		<xs:attribute name="ismobile" type="xs:string"/>
+		<xs:attribute name="canrotate" type="xs:string"/>
+		<xs:attribute name="canturn" type="xs:string"/>
+		
+		<xs:attribute name="maxhealth" type="xs:string"/>
+		<xs:attribute name="healthregen" type="xs:string"/>
+		<xs:attribute name="maxmana" type="xs:string"/>
+		<xs:attribute name="manaregen" type="xs:string"/>
+		
+		<xs:attribute name="armor" type="xs:string"/>
+		<xs:attribute name="magicarmor" type="xs:string"/>
+		<xs:attribute name="immunity" type="xs:string"/>
+		<xs:attribute name="immunitytype" type="xs:string"/>
+		<xs:attribute name="invulnerable" type="xs:string"/>
+		
+		<xs:attribute name="cancarryitems" type="xs:string"/>
+		<xs:attribute name="inventory0" type="xs:string"/>
+		<xs:attribute name="inventory1" type="xs:string"/>
+		<xs:attribute name="inventory2" type="xs:string"/>
+		<xs:attribute name="inventory3" type="xs:string"/>
+		<xs:attribute name="inventory4" type="xs:string"/>
+		<xs:attribute name="inventory5" type="xs:string"/>
+		<xs:attribute name="inventory6" type="xs:string"/>
+		<xs:attribute name="inventory7" type="xs:string"/>
+		<xs:attribute name="inventory8" type="xs:string"/>
+		
+		<xs:attribute name="attackduration" type="xs:string"/>
+		<xs:attribute name="attackactiontime" type="xs:string"/>
+		<xs:attribute name="attackcooldown" type="xs:string"/>
+		<xs:attribute name="attackdamagemin" type="xs:string"/>
+		<xs:attribute name="attackdamagemax" type="xs:string"/>
+		<xs:attribute name="attacknumanims" type="xs:string"/>
+		<xs:attribute name="attackoffset" type="xs:string"/>
+		<xs:attribute name="attackprojectile" type="xs:string"/>
+		<xs:attribute name="attackrange" type="xs:string"/>
+		<xs:attribute name="attackstarteffect" type="xs:string"/>
+		<xs:attribute name="attackactioneffect" type="xs:string"/>
+		<xs:attribute name="attackimpacteffect" type="xs:string"/>
+		<xs:attribute name="attacktype" type="xs:string"/>
+		<xs:attribute name="combattype" type="xs:string"/>
+		<xs:attribute name="attacktargetscheme" type="xs:string"/>
+		<xs:attribute name="canattack" type="xs:string"/>
+		<xs:attribute name="attackeffecttype" type="xs:string"/>
+		
+		<xs:attribute name="largeunit" type="xs:string"/>
+		
+		<xs:attribute name="wanderrange" type="xs:string"/>
+		<xs:attribute name="aggrorange" type="xs:string"/>
+		<xs:attribute name="sightrangeday" type="xs:string"/>
+		<xs:attribute name="sightrangenight" type="xs:string"/>
+		<xs:attribute name="revealrange" type="xs:string"/>
+		<xs:attribute name="revealtype" type="xs:string"/>
+		<xs:attribute name="clearvision" type="xs:string"/>
+		
+		<xs:attribute name="tiltfactor" type="xs:string"/>
+		<xs:attribute name="tiltspeed" type="xs:string"/>
+		
+		<xs:attribute name="stealthtype" type="xs:string"/>
+		<xs:attribute name="fadetime" type="xs:string"/>
+		<xs:attribute name="drawonmap" type="xs:string"/>
+		
+		<xs:attribute name="nocorpse" type="xs:string"/>
+		<xs:attribute name="corpsetime" type="xs:string"/>
+		<xs:attribute name="corpsefadetime" type="xs:string"/>
+		<xs:attribute name="corpsefadeeffect" type="xs:string"/>
+		<xs:attribute name="expireeffect" type="xs:string"/>
+		
+		<xs:attribute name="alwaystargetable" type="xs:string"/>
+		<xs:attribute name="alwaystransmitdata" type="xs:string"/>
+		<xs:attribute name="alwaysvisible" type="xs:string"/>
+		
+		<xs:attribute name="deniable" type="xs:string"/>
+		<xs:attribute name="isdragselectablemulti" type="xs:string"/>
+		<xs:attribute name="noglobalselect" type="xs:string"/>
+		<xs:attribute name="showlifetime" type="xs:string"/>
+		<xs:attribute name="iscontrollable" type="xs:string"/>
+		<xs:attribute name="continuousmodifiers" type="xs:string"/>
+	</xs:attributeGroup>
+	
+	<xs:attributeGroup name="SharedNonHeroUnitAttributes">
+		<xs:attribute name="orderconfirmedsound" type="xs:string"/>
+		<xs:attribute name="selectsound" type="xs:string"/>
+		
+		<xs:attribute name="mapicon" type="xs:string"/>
+		<xs:attribute name="mapiconsize" type="xs:string"/>
+		<xs:attribute name="mapiconcolor" type="xs:string"/>
+		<xs:attribute name="hoveronmap" type="xs:string"/>
+		
+		<xs:attribute name="experiencebounty" type="xs:string"/>
+		<xs:attribute name="goldbountymin" type="xs:string"/>
+		<xs:attribute name="goldbountymax" type="xs:string"/>
+		<xs:attribute name="goldbountyteam" type="xs:string"/>
+		
+		<xs:attribute name="deniablepercent" type="xs:string"/>
+		
+		<xs:attribute name="impacteffect" type="xs:string"/>
+		
+		<xs:attribute name="deathtime" type="xs:string"/>
+		
+		<xs:attribute name="isflying" type="xs:string"/>
+		<xs:attribute name="nothreat" type="xs:string"/>
+		<xs:attribute name="blocking" type="xs:string"/>
+		<xs:attribute name="noallyblock" type="xs:string"/>
+		<xs:attribute name="diewithowner" type="xs:string"/>
+		<xs:attribute name="antiblocking" type="xs:string"/>
+		
+		<xs:attribute name="unittype" type="xs:string"/>
+	</xs:attributeGroup>
+	
+	<xs:attributeGroup name="ItemStateAbilitySharedAttr">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		
+		<xs:attribute name="icon" type="xs:string"/>
+		
+		<xs:attribute name="passiveeffect" type="xs:string"/>
+		<xs:attribute name="impacteffect" type="xs:string"/>
+		
+		
+		<xs:attribute name="mincharges" type="xs:string"/>
+		<xs:attribute name="maxcharges" type="xs:string"/>
+		<xs:attribute name="initialcharges" type="xs:string"/>
+		
+		<xs:attribute name="toggleoffcooldowntime" type="xs:string"/>
+		
+		<xs:attribute name="immunitytype" type="xs:string"/>
+		<xs:attribute name="attackeffecttype" type="xs:string"/>
+		<xs:attribute name="attackrange" type="xs:string"/>
+		<xs:attribute name="strength" type="xs:string"/>
+		<xs:attribute name="strengthperlevel" type="xs:string"/>
+		<xs:attribute name="agility" type="xs:string"/>
+		<xs:attribute name="agilityperlevel" type="xs:string"/>
+		<xs:attribute name="intelligence" type="xs:string"/>
+		<xs:attribute name="intelligenceperlevel" type="xs:string"/>
+		<xs:attribute name="strengthpercharge" type="xs:string"/>
+		<xs:attribute name="intelligencepercharge" type="xs:string"/>
+		<xs:attribute name="agilitypercharge" type="xs:string"/>
+		<xs:attribute name="castspeedpercharge" type="xs:string"/>
+		<xs:attribute name="castspeed" type="xs:string"/>
+		<xs:attribute name="manaregen" type="xs:string"/>
+		<xs:attribute name="manaregenpercent" type="xs:string"/>
+		<xs:attribute name="manaregenmultiplier" type="xs:string"/>
+		<xs:attribute name="manaregenpercharge" type="xs:string"/>
+		<xs:attribute name="maxhealthpercharge" type="xs:string"/>
+		<xs:attribute name="healthregenpercharge" type="xs:string"/>
+		<xs:attribute name="maxmana" type="xs:string"/>
+		<xs:attribute name="maxhealth" type="xs:string"/>
+		<xs:attribute name="maxhealthmultiplier" type="xs:string"/>
+		<xs:attribute name="healthregen" type="xs:string"/>
+		<xs:attribute name="healthregenpercent" type="xs:string"/>
+		<xs:attribute name="healthregenreduction" type="xs:string"/>
+		<xs:attribute name="magicarmorstart" type="xs:string"/>
+		<xs:attribute name="magicarmormid" type="xs:string"/>
+		<xs:attribute name="magicarmorend" type="xs:string"/>
+		<xs:attribute name="magicarmorduration" type="xs:string"/>
+		<xs:attribute name="magicarmormidpos" type="xs:string"/>
+		<xs:attribute name="magicarmor" type="xs:string"/>
+		<xs:attribute name="armorpercharge" type="xs:string"/>
+		<xs:attribute name="armor" type="xs:string"/>
+		<xs:attribute name="armorstart" type="xs:string"/>
+		<xs:attribute name="armormid" type="xs:string"/>
+		<xs:attribute name="armorend" type="xs:string"/>
+		<xs:attribute name="armorduration" type="xs:string"/>
+		<xs:attribute name="armormidpos" type="xs:string"/>
+		<xs:attribute name="evasionmelee" type="xs:string"/>
+		<xs:attribute name="evasion" type="xs:string"/>
+		<xs:attribute name="lifesteal" type="xs:string"/>
+		<xs:attribute name="damage" type="xs:string"/>
+		<xs:attribute name="damagepercharge" type="xs:string"/>
+		<xs:attribute name="basedamagemultiplier" type="xs:string"/>
+		<xs:attribute name="totaldamagemultiplier" type="xs:string"/>
+		<xs:attribute name="attackspeedslow" type="xs:string"/>
+		<xs:attribute name="attackspeedslowpercharge" type="xs:string"/>
+		<xs:attribute name="attackspeedpercharge" type="xs:string"/>
+		<xs:attribute name="attackspeed" type="xs:string"/>
+		<xs:attribute name="movespeed" type="xs:string"/>
+		<xs:attribute name="movementspeed" type="xs:string"/> <!-- Percent -->
+		<xs:attribute name="movespeedpercharge" type="xs:string"/>
+		<xs:attribute name="movespeedstart" type="xs:string"/>
+		<xs:attribute name="movespeedmidpos" type="xs:string"/>
+		<xs:attribute name="movespeedend" type="xs:string"/>
+		<xs:attribute name="movespeedmultiplierpercharge" type="xs:string"/>
+		<xs:attribute name="movespeedmultiplier" type="xs:string"/>
+		<xs:attribute name="movespeedslowstart" type="xs:string"/>
+		<xs:attribute name="movespeedslowmid" type="xs:string"/>
+		<xs:attribute name="movespeedslowend" type="xs:string"/>
+		<xs:attribute name="movespeedslowduration" type="xs:string"/>
+		<xs:attribute name="movespeedslowmidpos" type="xs:string"/>
+		<xs:attribute name="movespeedslowpercharge" type="xs:string"/>
+		<xs:attribute name="movespeedslow" type="xs:string"/>
+		<xs:attribute name="slowresistancepercharge" type="xs:string"/>
+		<xs:attribute name="slowresistance" type="xs:string"/>
+		<xs:attribute name="unitwalking" type="xs:string"/>
+		<xs:attribute name="treewalking" type="xs:string"/>
+		<xs:attribute name="buildingwalking" type="xs:string"/>
+		<xs:attribute name="cliffwalking" type="xs:string"/>
+		<xs:attribute name="nothreat" type="xs:string"/>
+		<xs:attribute name="invulnerable" type="xs:string"/>
+		<xs:attribute name="deniable" type="xs:string"/>
+		<xs:attribute name="silenced" type="xs:string"/>
+		<xs:attribute name="immobilized" type="xs:string"/>
+		<xs:attribute name="immobilized2" type="xs:string"/>
+		<xs:attribute name="disarmed" type="xs:string"/>
+		<xs:attribute name="sighted" type="xs:string"/>
+		<xs:attribute name="perplexed" type="xs:string"/>
+		<xs:attribute name="restrained" type="xs:string"/>
+		<xs:attribute name="stealthtype" type="xs:string"/>
+		<xs:attribute name="fadetime" type="xs:string"/>
+		<xs:attribute name="misschance" type="xs:string"/>
+		<xs:attribute name="dispelonaction" type="xs:string"/>
+		<xs:attribute name="dispelondamage" type="xs:string"/>
+		<xs:attribute name="morphaggrorange" type="xs:string"/>
+		<xs:attribute name="morphmodel" type="xs:string"/>
+		<xs:attribute name="morphpreglobalscale" type="xs:string"/>
+		<xs:attribute name="morphattacktargetscheme" type="xs:string"/>
+		<xs:attribute name="morphattacknonlethal" type="xs:string"/>
+		<xs:attribute name="morphsightrangeday" type="xs:string"/>
+		<xs:attribute name="morphsightrangenight" type="xs:string"/>
+		<xs:attribute name="morphmodelscale" type="xs:string"/>
+		<xs:attribute name="morpheffectscale" type="xs:string"/>
+		<xs:attribute name="truestrike" type="xs:string"/>
+		<xs:attribute name="incomingdamagemultiplier" type="xs:string"/>
+		<xs:attribute name="debuffdurationmultiplier" type="xs:string"/>
+		<xs:attribute name="antiwalking" type="xs:string"/>
+		<xs:attribute name="criticalchance" type="xs:string"/>
+		<xs:attribute name="criticalmultiplier" type="xs:string"/>
+		<xs:attribute name="smackable" type="xs:string"/>
+		<xs:attribute name="isolated" type="xs:string"/>
+		<xs:attribute name="deflectionchance" type="xs:string"/>
+		<xs:attribute name="deflection" type="xs:string"/>
+		<xs:attribute name="revealtype" type="xs:string"/>
+		<xs:attribute name="revealrange" type="xs:string"/>
+		
+		<xs:attribute name="forceanim" type="xs:string"/>
+		
+		<xs:attribute name="modifierkey" type="xs:string"/>
+		<xs:attribute name="modifierkey2" type="xs:string"/>
+		<xs:attribute name="defaultactivemodifierkey" type="xs:string"/>
+	</xs:attributeGroup>
+	
+	<xs:complexType name="StateType">
+		<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+		<xs:attributeGroup ref="ItemStateAbilitySharedAttr"/>
+
+		<xs:attribute name="effecttype" type="xs:string"/>
+
+		<xs:attribute name="impactinterval" type="xs:string"/>
+		<xs:attribute name="channeltime" type="xs:string"/>
+
+		<xs:attribute name="morphinventory3" type="xs:string"/>
+		<xs:attribute name="morphpriority" type="xs:string"/>
+		<xs:attribute name="morphisselectable" type="xs:string"/>
+		
+		<xs:attribute name="remoteshopaccess" type="xs:string"/>
+		<xs:attribute name="shopaccess" type="xs:string"/>
+		<xs:attribute name="stashaccess" type="xs:string"/>
+		
+		<xs:attribute name="alwaystransmitdata" type="xs:string"/>
+		<xs:attribute name="serverentity" type="xs:string"/>
+		<xs:attribute name="allowtransfer" type="xs:string"/>
+		<xs:attribute name="displaylevel" type="xs:string"/>
+		<xs:attribute name="ishidden" type="xs:string"/>
+		<xs:attribute name="deathpersist" type="xs:string"/>
+		<xs:attribute name="frozen" type="xs:string"/>
+		<xs:attribute name="stunned" type="xs:string"/>
+		<xs:attribute name="revealed" type="xs:string"/>
+		<xs:attribute name="propagatetoillusions" type="xs:string"/>
+		<xs:attribute name="copyexperience" type="xs:string"/>
+		<xs:attribute name="ignoreinvulnerable" type="xs:string"/>
+		<xs:attribute name="ischanneling" type="xs:string"/>
+	</xs:complexType>
+	
+	<xs:element name="state" type="StateType"/>
+	<xs:element name="statenetaccum">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="StateType">
+					<xs:attribute name="shield" type="xs:string"/>
+					<xs:attribute name="maxaccumulator" type="xs:string"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="linearaffector">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			
+			<xs:attribute name="radius" type="xs:string"/>
+			<xs:attribute name="minlength" type="xs:string"/>
+			<xs:attribute name="maxlength" type="xs:string"/>
+			<xs:attribute name="subsegmentoffset" type="xs:string"/>
+			<xs:attribute name="subsegmentlength" type="xs:string"/>
+			
+			<xs:attribute name="impactdelay" type="xs:string"/>
+			<xs:attribute name="lifetime" type="xs:string"/>
+			
+			<xs:attribute name="targetselection" type="xs:string"/>
+			<xs:attribute name="targetscheme" type="xs:string"/>
+			<xs:attribute name="effecttype" type="xs:string"/>
+			
+			<xs:attribute name="effect" type="xs:string"/>
+			<xs:attribute name="impacteffect" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="affector">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			
+			<xs:attribute name="targetselection" type="TargetSelection"/>
+			<xs:attribute name="targetscheme" type="xs:string"/>
+			<xs:attribute name="effecttype" type="xs:string"/>
+			<xs:attribute name="impacteffect" type="xs:string"/>
+			<xs:attribute name="passiveeffect" type="xs:string"/>
+			<xs:attribute name="effect" type="xs:string"/>
+			<xs:attribute name="bridgeeffect" type="xs:string"/>
+			<xs:attribute name="effectscale" type="xs:string"/>
+			<xs:attribute name="maximpactsperinterval" type="xs:string"/>
+			<xs:attribute name="maximpactspertarget" type="xs:string"/>
+			<xs:attribute name="maxtotalimpacts" type="xs:string"/>
+			<xs:attribute name="repeattargetimpacts" type="xs:string"/>
+			<xs:attribute name="linkeffect" type="xs:string"/>
+			
+			<xs:attribute name="radius" type="xs:string"/>
+			<xs:attribute name="radiusstart" type="xs:string"/>
+			<xs:attribute name="radiusend" type="xs:string"/>
+			<xs:attribute name="innerradiusoffset" type="xs:string"/>
+			<xs:attribute name="angle" type="xs:string"/>
+			<xs:attribute name="arc" type="xs:string"/>
+			<xs:attribute name="arcstart" type="xs:string"/>
+			<xs:attribute name="arcend" type="xs:string"/>
+			<xs:attribute name="speed" type="xs:string"/>
+			<xs:attribute name="impactdelay" type="xs:string"/>
+			<xs:attribute name="impactinterval" type="xs:string"/>
+			<xs:attribute name="maxintervals" type="xs:string"/>
+			<xs:attribute name="lifetime" type="xs:string"/>
+			<xs:attribute name="life" type="xs:string"/>
+			
+			<xs:attribute name="canturn" type="xs:string"/>
+			<xs:attribute name="ignoreinvulnerable" type="xs:string"/>
+			<xs:attribute name="destroytrees" type="xs:string"/>
+			<xs:attribute name="persist" type="xs:string"/>
+			<xs:attribute name="diewithowner" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="order">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="triggerrange" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:complexType name="AbilityType">
+		<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+		<xs:attributeGroup ref="ItemStateAbilitySharedAttr"/>
+
+		<xs:attribute name="statuseffecttooltip" type="xs:string"/>
+		<xs:attribute name="statuseffecttooltip2" type="xs:string"/>
+		<xs:attribute name="statuseffectheader" type="xs:string"/>
+		<xs:attribute name="statuseffectheader2" type="xs:string"/>
+
+		<xs:attribute name="anim" type="xs:string"/>
+		<xs:attribute name="casttime" type="xs:string"/>
+		<xs:attribute name="castactiontime" type="xs:string"/>
+
+		<xs:attribute name="maxlevel" type="xs:string"/>
+		<xs:attribute name="requiredlevel" type="xs:string"/>
+		<xs:attribute name="baselevel" type="xs:string"/>
+
+		<xs:attribute name="activatescheme" type="xs:string"/>
+		<xs:attribute name="actiontype" type="xs:string"/>
+		<xs:attribute name="targetscheme" type="xs:string"/>
+		<xs:attribute name="casteffecttype" type="xs:string"/>
+		<xs:attribute name="casteffect" type="xs:string"/>
+		<xs:attribute name="bridgeeffect" type="xs:string"/>
+
+		<xs:attribute name="ischanneling" type="xs:string"/>
+		<xs:attribute name="channeltime" type="xs:string"/>
+		<xs:attribute name="channelrange" type="xs:string"/>
+		<xs:attribute name="allowautocast" type="xs:string"/>
+		<xs:attribute name="deferchannelcost" type="xs:string"/>
+		<xs:attribute name="deferchannelimpact" type="xs:string"/>
+
+		<xs:attribute name="manacost" type="xs:string"/>
+		<xs:attribute name="activemanacost" type="xs:string"/>
+		<xs:attribute name="toggleoffmanacost" type="xs:string"/>
+		<xs:attribute name="triggeredmanacost" type="xs:string"/>
+		<xs:attribute name="autotoggleoffwithtriggeredmanacost" type="xs:string"/>
+		<xs:attribute name="autotoggleoffwhendisabled" type="xs:string"/>
+		<xs:attribute name="cooldowntime" type="xs:string"/>
+		<xs:attribute name="cooldowntype" type="xs:string"/>
+
+		<xs:attribute name="projectile" type="xs:string"/>
+		<xs:attribute name="range" type="xs:string"/>
+		<xs:attribute name="forcerange" type="xs:string"/>
+		<xs:attribute name="allowoutofboundscast" type="xs:string"/>
+		<xs:attribute name="allowoutofrangecast" type="xs:string"/>
+		<xs:attribute name="norangeclamp" type="xs:string"/>
+		<xs:attribute name="usepathforrange" type="xs:string"/>
+		<xs:attribute name="targetradius" type="xs:string"/>
+		<xs:attribute name="targetmaterial" type="xs:string"/>
+		<xs:attribute name="minrange" type="xs:string"/>
+		<xs:attribute name="radius" type="xs:string"/>
+		<xs:attribute name="notargetradius" type="xs:string"/>
+		<xs:attribute name="notargetmaterial" type="xs:string"/>
+		<xs:attribute name="notargetscheme" type="xs:string"/>
+		<xs:attribute name="notargetignoreinvulnerable" type="xs:string"/>
+		<xs:attribute name="effecttype" type="xs:string"/>
+		<xs:attribute name="targetoffset" type="xs:string"/>
+		
+		<xs:attribute name="useproxy" type="xs:string"/>
+		<xs:attribute name="proxytargetscheme" type="xs:string"/>
+		<xs:attribute name="proxyeffecttype" type="xs:string"/>
+		<xs:attribute name="proxyselectionradius" type="xs:string"/>
+		<xs:attribute name="proxyselectionmethod" type="xs:string"/>
+		<xs:attribute name="proxytargetmaterial" type="xs:string"/>
+
+		<xs:attribute name="interface" type="xs:string"/>
+		<xs:attribute name="keyslot" type="xs:string"/>
+		
+		<xs:attribute name="counter" type="xs:string"/>
+		<xs:attribute name="counterpercharge" type="xs:string"/>
+		
+		<xs:attribute name="clientuitrigger" type="xs:string"/>
+		
+		<xs:attribute name="novoiceresponse" type="xs:string"/>
+		<xs:attribute name="noresponse" type="xs:string"/>
+		<xs:attribute name="doubleactivate" type="xs:string"/>
+		<xs:attribute name="frontqueue" type="xs:string"/>
+		<xs:attribute name="inheritmovement" type="xs:string"/>
+		<xs:attribute name="noninterrupting" type="xs:string"/>
+		<xs:attribute name="noturntotarget" type="xs:string"/>
+		<xs:attribute name="nostun" type="xs:string"/>
+		<xs:attribute name="nosilence" type="xs:string"/>
+		<xs:attribute name="disabled" type="xs:string"/>
+		<xs:attribute name="ignoreinvulnerable" type="xs:string"/>
+		<xs:attribute name="nostopanim" type="xs:string"/>
+	</xs:complexType>
+	
+	<xs:element name="item">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AbilityType">
+					<xs:attribute name="cost" type="xs:string"/>
+					<xs:attribute name="components" type="xs:string"/>
+					
+					<xs:attribute name="allowsharing" type="xs:string" default="false"/>
+					<xs:attribute name="allowtransfer" type="xs:string" default="false"/>
+					<xs:attribute name="dropondeath" type="xs:string" default="false"/>
+					<xs:attribute name="bindonpickup" type="xs:string" default="false"/>
+					<xs:attribute name="nosell" type="xs:string" default="false"/>
+					<xs:attribute name="maxowned" type="xs:string"/>
+					<xs:attribute name="unkillable" type="xs:string" default="false"/>
+					<xs:attribute name="nostash" type="xs:string" default="false"/>
+					<xs:attribute name="nodrop" type="xs:string" default="false"/>
+					
+					<xs:attribute name="searchradius" type="xs:string" default="false"/>
+					
+					<xs:attribute name="autoassemble" type="xs:string"/>
+					<xs:attribute name="allowdisassemble" type="xs:string"/>
+					
+					<xs:attribute name="carryscheme" type="xs:string"/>
+					<xs:attribute name="clonescheme" type="xs:string"/>
+					<xs:attribute name="category" type="xs:string"/>
+					
+					<xs:attribute name="initialstock" type="xs:string"/>
+					<xs:attribute name="maxstock" type="xs:string"/>
+					<xs:attribute name="restockdelay" type="xs:string"/>
+					
+					<xs:attribute name="chargecost" type="xs:string"/>
+					<xs:attribute name="rechargeable" type="xs:string"/>
+					<xs:attribute name="destroyonempty" type="xs:string"/>
+					
+					<xs:attribute name="nopurchase" type="xs:string" default="false"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ability" type="AbilityType"/>
+	<xs:element name="abilityattribute" type="AbilityType"/>
+	
+	<xs:element name="projectile">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			
+			<xs:attribute name="speed" type="xs:string"/>
+			<xs:attribute name="rollspeed" type="xs:string"/>
+			<xs:attribute name="gravity" type="xs:string"/>
+			<xs:attribute name="pitch" type="xs:string"/>
+			<xs:attribute name="curve" type="xs:string"/>
+			<xs:attribute name="acceleration" type="xs:string"/>
+			
+			<xs:attribute name="model" type="xs:string"/>
+			<xs:attribute name="modelscale" type="xs:string"/>
+			<xs:attribute name="scale" type="xs:string"/>
+			<xs:attribute name="anim" type="xs:string"/>
+			
+			<xs:attribute name="casteffect" type="xs:string"/>
+			<xs:attribute name="passiveeffect" type="xs:string"/>
+			<xs:attribute name="invalideffect" type="xs:string"/>
+			<xs:attribute name="impacteffect" type="xs:string"/>
+			<xs:attribute name="traileffect" type="xs:string"/>
+			<xs:attribute name="deatheffect" type="xs:string"/>
+			<xs:attribute name="effectscale" type="xs:string"/>
+			
+			<xs:attribute name="pathing" type="xs:string"/>
+			<xs:attribute name="canturn" type="xs:string"/>
+			<xs:attribute name="flying" type="xs:string"/>
+			<xs:attribute name="flyheight" type="xs:string"/>
+			<xs:attribute name="buildingwalking" type="xs:string"/>
+			
+			<xs:attribute name="touchradius" type="xs:string"/>
+			<xs:attribute name="maxtouchespertarget" type="xs:string"/>
+			<xs:attribute name="maxtouches" type="xs:string"/>
+			<xs:attribute name="touchtargetscheme" type="xs:string"/>
+			<xs:attribute name="touchignoreinvulnerable" type="xs:string"/>
+			<xs:attribute name="touchcliffs" type="xs:string" default="false"/>
+			<xs:attribute name="touchtargetactivescheme" type="xs:string"/>
+			<xs:attribute name="toucheffecttype" type="xs:string"/>
+			<xs:attribute name="touchradiusdiradjust" type="xs:string"/>
+			<xs:attribute name="impactdistance" type="xs:string"/>
+			<xs:attribute name="range" type="xs:string"/>
+			
+			<xs:attribute name="lifetime" type="xs:string"/>
+			<xs:attribute name="useexactlifetime" type="xs:string"/>
+			
+			<xs:attribute name="turnrate" type="xs:string"/>
+			
+			<xs:attribute name="inheritvisibilityfromtarget" type="xs:string"/>
+			
+			<xs:attribute name="orbitclockwise" type="xs:string"/>
+			<xs:attribute name="orbit" type="xs:string"/>
+			<xs:attribute name="orbitradius" type="xs:string"/>
+			<xs:attribute name="orbitspeed" type="xs:string"/>
+			<xs:attribute name="orbitmaxspeed" type="xs:string"/>
+			<xs:attribute name="orbitmaxtouchespertarget" type="xs:string"/>
+			<xs:attribute name="orbitmodelangles" type="xs:string"/>
+			
+			<xs:attribute name="ignoreinvulnerable" type="xs:string"/>
+			<xs:attribute name="impactstealth" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="building">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attributeGroup ref="SharedUnitAttributes"/>
+			<xs:attributeGroup ref="SharedNonHeroUnitAttributes"/>
+			
+			<xs:attribute name="noaltclickping" type="xs:string" default="false"/>
+			
+			<xs:attribute name="noheroarmorreduction" type="xs:string"/>
+			
+			<xs:attribute name="isbase" type="xs:string"/>
+			<xs:attribute name="israx" type="xs:string"/>
+			<xs:attribute name="isshop" type="xs:string"/>
+			
+			<xs:attribute name="defaultshop" type="xs:string"/>
+			
+			<xs:attribute name="sharedinventory0" type="xs:string"/>
+			<xs:attribute name="sharedremoteshopaccess" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="pet">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attributeGroup ref="SharedUnitAttributes"/>
+			<xs:attributeGroup ref="SharedNonHeroUnitAttributes"/>
+			
+			<xs:attribute name="partialcontrolshare" type="xs:string"/>
+			
+			<xs:attribute name="previewmodel" type="xs:string"/>
+			<xs:attribute name="previewpos" type="xs:string"/>
+			<xs:attribute name="previewangles" type="xs:string"/>
+			<xs:attribute name="previewscale" type="xs:string"/>
+			
+			<xs:attribute name="maxdistancefromowner" type="xs:string"/>
+			
+			<xs:attribute name="dropitemsondeath" type="xs:string"/>
+			<xs:attribute name="allowavatarchange" type="xs:string"/>
+			<xs:attribute name="lifetime" type="xs:string"/>
+			<xs:attribute name="isunit" type="xs:string"/>
+			<xs:attribute name="ispersistent" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="powerup">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attributeGroup ref="SharedUnitAttributes"/>
+			<xs:attributeGroup ref="SharedNonHeroUnitAttributes"/>
+			
+			<xs:attribute name="touchtargetscheme" type="xs:string"/>
+			<xs:attribute name="touchsound" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="gadget">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attributeGroup ref="SharedUnitAttributes"/>
+			<xs:attributeGroup ref="SharedNonHeroUnitAttributes"/>
+			
+			<xs:attribute name="lifetime" type="xs:string"/>
+			
+			<xs:attribute name="hidden" type="xs:string"/>
+			<xs:attribute name="immobile" type="xs:string"/>
+			
+			<xs:attribute name="relayexperience" type="xs:boolean" default="false"/>
+			<xs:attribute name="serverentity" type="xs:boolean" default="false"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="creep">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attributeGroup ref="SharedUnitAttributes"/>
+			<xs:attributeGroup ref="SharedNonHeroUnitAttributes"/>
+			
+			<xs:attribute name="gibanim" type="xs:string"/>
+			<xs:attribute name="deniedanim" type="xs:string"/>
+			
+			<xs:attribute name="proximityrange" type="xs:string"/>
+			
+			<xs:attribute name="attackdamageminpercharge" type="xs:string"/>
+			<xs:attribute name="attackdamagemaxpercharge" type="xs:string"/>
+			<xs:attribute name="maxhealthpercharge" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="neutral">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attributeGroup ref="SharedUnitAttributes"/>
+			<xs:attributeGroup ref="SharedNonHeroUnitAttributes"/>
+			
+			<xs:attribute name="maxhealthperlevel" type="xs:string"/>
+			
+			<xs:attribute name="threateffecttype" type="xs:string" use="required"/>
+			<xs:attribute name="aggroscheme" type="xs:string" use="required"/>
+			<xs:attribute name="proximityscheme" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="critter">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attributeGroup ref="SharedUnitAttributes"/>
+			<xs:attributeGroup ref="SharedNonHeroUnitAttributes"/>
+			
+			<xs:attribute name="maxhealthperlevel" type="xs:string"/>
+			
+			<xs:attribute name="threateffecttype" type="xs:string"/>
+			<xs:attribute name="aggroscheme" type="xs:string"/>
+			<xs:attribute name="proximityscheme" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="hero">
+		<xs:complexType>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:group ref="events"/>
+				
+				<xs:element name="recommendeditem">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			
+			<xs:attributeGroup ref="SharedUnitAttributes"/>
+			
+			<xs:attribute name="team" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<!--<xs:enumeration value="Legion"/>
+						<xs:enumeration value="Hellbourne"/>-->
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			
+			<xs:attribute name="selectedsound" type="xs:string" use="required"/>
+			<xs:attribute name="selectedflavorsound" type="xs:string" use="required"/>
+			<xs:attribute name="confirmmovesound" type="xs:string" use="required"/>
+			<xs:attribute name="confirmattacksound" type="xs:string" use="required"/>
+			<xs:attribute name="nomanasound" type="xs:string" use="required"/>
+			<xs:attribute name="cooldownsound" type="xs:string" use="required"/>
+			<xs:attribute name="announcersound" type="xs:string" use="required"/>
+			<xs:attribute name="tauntedsound" type="xs:string" use="required"/>
+			<xs:attribute name="tauntkillsound" type="xs:string" use="required"/>
+			
+			<xs:attribute name="category" type="xs:string"/>
+			<xs:attribute name="difficulty" type="xs:string"/>
+			
+			<xs:attribute name="primaryattribute" type="xs:string"/>
+			<xs:attribute name="strength" type="xs:decimal"/>
+			<xs:attribute name="strengthperlevel" type="xs:decimal"/>
+			<xs:attribute name="agility" type="xs:decimal"/>
+			<xs:attribute name="agilityperlevel" type="xs:decimal"/>
+			<xs:attribute name="intelligence" type="xs:decimal"/>
+			<xs:attribute name="intelligenceperlevel" type="xs:decimal"/>
+			
+			<xs:attribute name="previewmodel" type="xs:string"/>
+			<xs:attribute name="previewpos" type="xs:string"/>
+			<xs:attribute name="previewangles" type="xs:string"/>
+			<xs:attribute name="previewscale" type="xs:decimal"/>
+			<xs:attribute name="previewpassiveeffect" type="xs:string"/>
+			
+			<xs:attribute name="storemodel" type="xs:string"/>
+			<xs:attribute name="storepos" type="xs:string"/>
+			<xs:attribute name="storeangles" type="xs:string"/>
+			<xs:attribute name="storescale" type="xs:string"/>
+			<xs:attribute name="storepassiveeffect" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="shop">
+		<xs:complexType>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="item">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			
+			<xs:attribute name="style" type="xs:string" use="required"/>
+			<xs:attribute name="header" type="xs:string" use="required"/>
+			
+			<xs:attribute name="icon" type="xs:string" use="required"/>
+			<xs:attribute name="order" type="xs:string" use="required"/>
+			<xs:attribute name="slot" type="xs:string" use="required"/>
+			
+			<xs:attribute name="recommendeditems" type="xs:string" default="false"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="waypoint">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="model" type="xs:string" use="required"/>
+			<xs:attribute name="modelscale" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="game">
+		<xs:complexType>
+			<xs:group ref="events" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xs:attribute name="name" type="xs:string"/>
+			
+			<xs:attribute name="startinggold" type="xs:string"/>
+			<xs:attribute name="repickcost" type="xs:string"/>
+			<xs:attribute name="randombonus" type="xs:string"/>
+			
+			<xs:attribute name="goldpertick" type="xs:string"/>
+			<xs:attribute name="incomeinterval" type="xs:string"/>
+			
+			<xs:attribute name="experiencemultiplier" type="xs:string"/>
+			<xs:attribute name="towerdenygoldmultiplier" type="xs:string"/>
+			
+			<xs:attribute name="norepick" type="xs:string"/>
+			<xs:attribute name="noswap" type="xs:string"/>
+			<xs:attribute name="forcerandom" type="xs:string"/>
+			
+			<xs:attribute name="allowallheroes" type="xs:string"/>
+			<xs:attribute name="allowagility" type="xs:string"/>
+			<xs:attribute name="allowintelligence" type="xs:string"/>
+			<xs:attribute name="allowstrength" type="xs:string"/>
+			<xs:attribute name="heropoolsize" type="xs:string"/>
+			<xs:attribute name="bancount" type="xs:string"/>
+			<xs:attribute name="usecaptains" type="xs:string"/>
+			
+			<xs:attribute name="spawnpowerups" type="xs:string"/>
+			<xs:attribute name="alternatepicks" type="xs:string"/>
+			
+			<xs:attribute name="respawntimeperlevel" type="xs:string"/>
+			<xs:attribute name="repickonrespawn" type="xs:string"/>
+			
+			<xs:attribute name="nolobby" type="xs:string"/>
+			<xs:attribute name="noheroselect" type="xs:string"/>
+			<xs:attribute name="nodev" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
